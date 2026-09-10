@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en"><head><script type="application/json" data-od-external-dependencies>["https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Poppins:wght@300;400;500;600;700&display=swap"]</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redesigning Digital Banking Experience — Saili B.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --navy:#0c1c31;
+    --navy-soft:#132a45;
+    --fg:#1a1a1a;
+    --muted:#5c6470;
+    --muted-on-navy:#7583a3;
+    --border:#e4e2df;
+    --accent:#b51824;      /* deep maroon - tags, buttons, stats */
+    --accent-bright:#e91e4f; /* brighter crimson - hero emphasis */
+    --cta-blue:#3b82f6;
+    --green-bg:#375743;
+    --card-bg:#f4f2ef;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Poppins',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{
+    font-family:'Playfair Display', serif;
+    margin:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1400px;margin:0 auto;padding:0 60px;}
+  .eyebrow{
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.18em;
+    color:var(--accent);
+    text-transform:uppercase;
+  }
+  .eyebrow.on-navy{color:#ffffff;}
+  button, .btn{cursor:pointer;font-family:inherit;}
+  :focus-visible{outline:2px solid var(--cta-blue);outline-offset:3px;}
+
+  /* ---------- NAVBAR ---------- */
+  header.nav{
+    background:rgba(26,26,26,.92);
+    backdrop-filter:blur(14px) saturate(1.1);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 60px;
+    position:sticky;top:0;z-index:100;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .brand{display:flex;align-items:center;gap:12px;font-weight:600;font-size:17px;}
+  .brand .mark{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--cta-blue);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:15px;font-family:'Poppins',sans-serif;
+  }
+  nav.links{display:flex;gap:40px;font-size:14px;letter-spacing:.06em;color:#c9c9c9;}
+  nav.links a{transition:color .15s ease;padding:4px 2px;}
+  nav.links a:hover, nav.links a:focus-visible{color:#ffffff;}
+  .talk-btn{
+    background:var(--cta-blue);
+    color:#fff;
+    border:none;
+    padding:11px 26px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.04em;
+  }
+  .talk-btn:hover{background:#2f6fe0;}
+  .talk-btn:focus-visible{outline:2px solid #ffffff;outline-offset:2px;}
+
+  /* ---------- HERO ---------- */
+  .hero-image{width:100%;background:var(--green-bg);}
+  .hero-image img{width:100%;height:auto;display:block;}
+
+  .hero-title{
+    max-width:1150px;
+    margin:0 auto;
+    text-align:center;
+    padding:90px 40px 30px;
+  }
+  .hero-title h1{
+    font-size:52px;
+    line-height:1.22;
+    font-weight:600;
+    color:var(--fg);
+  }
+  .hero-title h1 .accent{color:var(--accent-bright);}
+  .hero-sub{
+    text-align:center;
+    color:var(--muted);
+    font-size:24px;
+    font-weight:300;
+    margin:26px 0 0;
+  }
+
+  /* ---------- OVERVIEW ---------- */
+  .overview{
+    padding:110px 0 80px;
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr;
+    gap:60px;
+  }
+  .overview .quote{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:26px;
+    line-height:1.4;
+    margin:18px 0 22px;
+    font-weight:500;
+  }
+  .overview p.body-copy{
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.75;
+    font-weight:300;
+  }
+  .stat-col{border-top:1px solid var(--border);padding-top:22px;}
+  .stat-col + .stat-col{margin-top:70px;}
+  .stat-col .label{
+    font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--muted);
+    text-transform:uppercase;margin-bottom:10px;
+  }
+  .stat-col .value{font-family:'Playfair Display',serif;font-size:30px;font-weight:600;}
+  .stat-col .value.red{color:var(--accent);}
+  .stat-col .note{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:var(--muted);margin-top:4px;}
+
+  /* ---------- ROLE ---------- */
+  .role{padding:60px 0 120px;display:grid;grid-template-columns:1fr 1.4fr 1.4fr;gap:60px;}
+  .role .lede .quote{
+    font-family:'Playfair Display',serif;font-style:italic;font-size:26px;
+    line-height:1.4;font-weight:500;margin-top:16px;
+  }
+  .role-block .num{
+    font-family:'Playfair Display',serif;color:var(--accent);font-size:20px;font-weight:600;margin-bottom:14px;
+  }
+  .role-block h3{font-size:26px;font-weight:600;margin-bottom:18px;}
+  .role-block ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:20px;}
+  .role-block li{font-size:15px;line-height:1.7;color:#333;font-weight:300;padding-bottom:18px;border-bottom:1px solid var(--border);}
+  .role-block li:last-child{border-bottom:none;}
+
+  /* ---------- CHALLENGE (navy split) ---------- */
+  .challenge{
+    background:var(--navy);
+    color:#fff;
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    align-items:stretch;
+  }
+  .challenge-copy{padding:90px 70px 90px 60px;max-width:640px;}
+  .challenge-copy h2{
+    font-size:46px;line-height:1.28;font-weight:500;margin:20px 0 46px;
+  }
+  .challenge-copy h2 em{
+    font-style:italic;color:var(--muted-on-navy);font-weight:500;
+  }
+  .challenge-list{
+    list-style:none;margin:0;padding:0;
+    display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;
+  }
+  .challenge-list li{
+    position:relative;padding-left:22px;font-size:15px;line-height:1.6;font-weight:300;color:#dfe3ea;
+  }
+  .challenge-list li::before{
+    content:"–";position:absolute;left:0;top:0;color:#8b94a8;
+  }
+  .challenge-media{position:relative;z-index:1;}
+  .challenge-media img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1;}
+  .quote-card{
+    position:absolute;bottom:56px;left:-120px;right:auto;
+    width:320px;
+    background:var(--accent);
+    color:#fff;
+    padding:26px 28px;
+    box-shadow:0 18px 40px rgba(0,0,0,.35);
+    z-index:5;
+  }
+  .quote-card p{
+    font-family:'Playfair Display',serif;font-style:italic;font-size:17px;line-height:1.5;font-weight:500;margin:0;
+  }
+
+  /* ---------- METHODOLOGY ---------- */
+  .methodology{padding:120px 0;text-align:center;}
+  .methodology .eyebrow{display:block;margin-bottom:60px;}
+  .method-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border:1px solid var(--border);
+    text-align:left;
+  }
+  .method-card{padding:50px 45px;border-right:1px solid var(--border);}
+  .method-card:last-child{border-right:none;}
+  .method-card .num{
+    font-family:'Playfair Display',serif;font-size:56px;font-weight:600;
+    color:#f6dde0;
+    margin-bottom:18px;
+  }
+  .method-card h3{font-size:26px;font-weight:600;margin-bottom:22px;}
+  .method-card ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px;}
+  .method-card li{
+    position:relative;padding-left:28px;font-size:15px;line-height:1.65;color:#333;font-weight:300;text-align:left;
+  }
+  .method-card li::before{
+    content:"";position:absolute;left:0;top:6px;width:10px;height:10px;border-radius:50%;
+    border:2px solid var(--accent);background:radial-gradient(circle,var(--accent) 0 3px, transparent 3px);
+  }
+
+  /* ---------- OUTCOME (navy) ---------- */
+  .outcome{background:var(--navy);color:#fff;position:relative;overflow:hidden;}
+  .outcome-top{
+    display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:0;align-items:stretch;padding:100px 0 0;
+  }
+  .outcome-left{padding-left:0;}
+  .outcome h2{font-size:44px;font-weight:600;margin-bottom:36px;}
+  .outcome h2 .fade{color:var(--muted-on-navy);font-weight:500;}
+  .outcome-left ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:24px;}
+  .outcome-left li{position:relative;padding-left:22px;font-size:16px;font-weight:300;color:#e6e9ef;}
+  .outcome-left li::before{content:"–";position:absolute;left:0;color:#8b94a8;}
+  .impact-card{
+    background:#fff;color:var(--fg);padding:56px 54px;margin-top:-20px;
+    box-shadow:0 30px 60px rgba(0,0,0,.3);
+  }
+  .impact-card ul{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column;gap:22px;}
+  .impact-card li{position:relative;padding-left:26px;font-size:15px;line-height:1.6;font-weight:300;color:#2a2a2a;}
+  .impact-card li::before{
+    content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--accent);
+  }
+  .outcome-media{align-self:stretch;}
+  .outcome-media img{width:100%;height:100%;object-fit:cover;object-position:right center;}
+
+  /* ---------- STATS ---------- */
+  .stats-section{padding:130px 0 90px;text-align:center;}
+  .stats-section .eyebrow{display:block;margin-bottom:70px;}
+  .stat-trio{display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:70px;}
+  .stat-trio .num{
+    font-family:'Playfair Display',serif;font-size:96px;font-weight:600;color:var(--accent);line-height:1;
+  }
+  .stat-trio .cap{
+    font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-top:18px;
+  }
+  .quote-grid{
+    display:grid;grid-template-columns:1fr 1fr;
+    border:1px solid var(--border);border-bottom:none;
+    text-align:left;margin-bottom:0;
+  }
+  .quote-grid .qcell{
+    padding:34px 44px;border-bottom:1px solid var(--border);font-family:'Playfair Display',serif;
+    font-style:italic;font-size:19px;line-height:1.5;color:#2a2a2a;
+  }
+  .quote-grid .qcell:nth-child(odd){border-right:1px solid var(--border);}
+  .quote-grid .qcell strong{color:var(--accent);font-weight:700;font-style:italic;}
+  .full-stat{
+    border:1px solid var(--border);border-top:none;
+    padding:34px 44px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:#2a2a2a;
+  }
+  .full-stat strong{color:var(--accent);font-weight:700;font-style:italic;}
+  .full-stat .arrow{color:var(--accent);font-size:26px;font-family:'Poppins',sans-serif;}
+
+  /* ---------- LEADERSHIP ---------- */
+  .leadership{background:var(--navy);color:#fff;position:relative;}
+  .lead-top{display:grid;grid-template-columns:1.05fr 1fr;gap:0;padding:110px 0 110px;align-items:start;}
+  .lead-copy{padding-right:60px;}
+  .lead-copy h2{font-size:44px;line-height:1.25;font-weight:500;margin:22px 0 46px;}
+  .lead-copy h2 em{font-style:italic;color:var(--muted-on-navy);font-weight:500;}
+  .lead-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:34px 40px;}
+  .lead-list li{
+    position:relative;padding-left:20px;font-size:16px;line-height:1.55;font-weight:300;color:#e6e9ef;
+    border-left:2px solid var(--accent);padding-left:18px;
+  }
+  .achievement-card{
+    background:#fff;color:var(--fg);padding:54px 50px;box-shadow:0 30px 60px rgba(0,0,0,.3);
+  }
+  .achievement-card ul{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:22px;}
+  .achievement-card li{position:relative;padding-left:26px;font-size:15px;line-height:1.65;font-weight:300;color:#2a2a2a;}
+  .achievement-card li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--accent);}
+  .lead-media{background:var(--green-bg);padding:60px;}
+  .lead-media img{width:100%;border-radius:4px;}
+
+  /* ---------- FINAL ---------- */
+  .final{padding:130px 0 110px;text-align:center;}
+  .final .eyebrow{display:block;margin-bottom:36px;}
+  .final h2{
+    max-width:1150px;margin:0 auto;font-size:44px;line-height:1.35;font-weight:500;
+  }
+  .final h2 em{font-style:italic;font-weight:500;}
+  .final .sub{
+    max-width:700px;margin:34px auto 0;font-family:'Playfair Display',serif;font-style:italic;
+    font-size:19px;line-height:1.6;color:var(--muted);
+  }
+  .confidentiality{
+    max-width:900px;margin:70px auto 0;background:var(--card-bg);padding:30px 40px;text-align:center;
+  }
+  .confidentiality .label{font-size:12px;font-weight:600;letter-spacing:.12em;color:#444;text-transform:uppercase;margin-bottom:10px;}
+  .confidentiality p{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:#444;line-height:1.6;margin:0;}
+  .cta-wrap{margin-top:70px;}
+  .view-projects{
+    background:var(--accent);color:#fff;border:none;padding:20px 48px;border-radius:999px;
+    font-size:16px;font-weight:600;letter-spacing:.02em;box-shadow:0 18px 34px rgba(181,24,36,.28);
+  }
+  .view-projects:hover{background:#93131d;}
+  .view-projects:focus-visible{outline:2px solid var(--navy);outline-offset:3px;}
+
+  footer.site-footer{
+    padding:36px 0 50px;text-align:center;color:var(--muted);font-size:12px;letter-spacing:.04em;
+  }
+
+  @media (max-width:1100px){
+    .wrap{padding:0 28px;}
+    header.nav{padding:14px 24px;}
+    nav.links{display:none;}
+    .hero-title h1{font-size:36px;}
+    .hero-sub{font-size:18px;}
+    .overview,.role{grid-template-columns:1fr;gap:44px;padding-top:70px;}
+    .challenge{grid-template-columns:1fr;}
+    .challenge-media{min-height:360px;}
+    .challenge-copy{padding:60px 24px;max-width:none;}
+    .quote-card{left:24px;right:24px;width:auto;bottom:24px;}
+    .method-grid{grid-template-columns:1fr;}
+    .method-card{border-right:none;border-bottom:1px solid var(--border);}
+    .outcome-top{grid-template-columns:1fr;padding:60px 24px 0;}
+    .outcome-media{min-height:320px;margin-top:40px;}
+    .impact-card{margin-top:40px;}
+    .stat-trio{grid-template-columns:1fr;gap:40px;}
+    .quote-grid{grid-template-columns:1fr;}
+    .quote-grid .qcell:nth-child(odd){border-right:none;}
+    .lead-top{grid-template-columns:1fr;padding:60px 24px !important;height:auto !important;}
+    .lead-copy{padding-right:0;margin-bottom:40px;}
+    .lead-list{grid-template-columns:1fr;}
+    .final h2{font-size:30px;}
+
+    /* Neutralize desktop-only inline pixel offsets/fixed sizes so the
+       manually fine-tuned desktop positions aren't dragged along on
+       small screens. Desktop layout above 1100px is untouched. */
+    .challenge-list{width:auto !important;}
+    .challenge-media{transform:none !important;}
+    .challenge-media img{width:100% !important;transform:none !important;}
+    .quote-card{transform:none !important;}
+    .outcome{height:auto !important;}
+    .outcome-top{transform:none !important;margin-left:0 !important;}
+    .impact-card{transform:none !important;}
+    .outcome-media img{width:100% !important;height:auto !important;transform:none !important;}
+    .achievement-card{transform:none !important;}
+    .lead-media img{transform:none !important;}
+  }
+</style>
+</head>
+<body>
+
+  <header class="nav" data-od-id="site-navbar">
+    <div class="brand" data-od-id="brand-logo">
+      <span class="mark">SB</span>
+      <span>Saili B.</span>
+    </div>
+    <nav class="links">
+      <a href="index.html#top" data-od-id="nav-home">HOME</a>
+      <a href="index.html#work" data-od-id="nav-work">WORK</a>
+      <a href="index.html#about" data-od-id="nav-about">ABOUT</a>
+      <a href="https://drive.google.com/file/d/11xnpkp3scNq9Za6gYi-1OitTIbmNhtTH/view" target="_blank" rel="noopener noreferrer" data-od-id="nav-resume">RESUME</a>
+      <a href="index.html#contact" data-od-id="nav-contact">CONTACT</a>
+    </nav>
+    <a class="talk-btn" href="index.html#contact" data-od-id="cta-lets-talk" style="display:inline-block;text-decoration:none;">LET'S TALK</a>
+  </header>
+
+  <div class="hero-image" data-od-id="hero-image">
+    <img src="assets/images/banking-00.png" alt="Redesigned banking dashboard shown across desktop, tablet and mobile, plus a close-up array of mobile banking screens" width="1920" height="850">
+  </div>
+
+  <section class="hero-title" data-od-id="hero-title">
+    <h1 style="font-size: 50px;">Redesigning Digital Banking Experience for a<br><span class="accent">Leading Australian Bank</span></h1>
+    <p class="hero-sub">Mobile App &amp; Web | B2C | 2-Year Engagement</p>
+  </section>
+
+  <section class="wrap overview" data-od-id="project-overview">
+    <div>
+      <span class="eyebrow">Project Overview</span>
+      <p class="quote">"Redesigning a legacy ecosystem to deliver a modern, scalable, and seamless omni-channel experience."</p>
+      <p class="body-copy">This project involved a large-scale transformation of a leading Australian bank's digital ecosystem. Due to NDA restrictions, specific visuals and brand details cannot be disclosed. This transformation involved a large-scale overhaul of a leading Australian bank's digital footprint, focusing on accessibility, modernization, and long-term user retention.</p>
+    </div>
+    <div>
+      <div class="stat-col">
+        <div class="label">Duration</div>
+        <div class="value red">2 years</div>
+      </div>
+      <div class="stat-col">
+        <div class="label">Team Strength</div>
+        <div class="value">6 Designers</div>
+        <div class="note">+ cross-functional stakeholders</div>
+      </div>
+    </div>
+    <div>
+      <div class="stat-col">
+        <div class="label">Role Evolution</div>
+        <div class="value">Product Designer</div>
+        <div class="note">→ Design Lead</div>
+      </div>
+      <div class="stat-col">
+        <div class="label">Platforms</div>
+        <div class="value">iOS / Android /Web</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap role" data-od-id="role-responsibility">
+    <div class="lede">
+      <span class="eyebrow">My Role &amp; Responsibility</span>
+      <p class="quote">Leading the creative direction and managing the end-to-end design lifecycle.</p>
+    </div>
+    <div class="role-block">
+      <div class="num">01</div>
+      <h3>Strategic Direction</h3>
+      <ul>
+        <li>Leading design direction across mobile and web platforms</li>
+        <li>Facilitating stakeholder workshops and alignment sessions</li>
+        <li>Driving design quality through reviews and feedback cycles</li>
+        <li>Contributing to project pitches and client presentations</li>
+      </ul>
+    </div>
+    <div class="role-block">
+      <div class="num">02</div>
+      <h3>Execution &amp; Systems</h3>
+      <ul>
+        <li>Managing and mentoring a team of designers</li>
+        <li>Defining user flows, IA, and end-to-end experiences</li>
+        <li>Established reusable design patterns and components to improve consistency and delivery speed</li>
+        <li>Contributed to the design system by defining iconography and illustration guidelines</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="challenge" data-od-id="the-challenge">
+    <div class="challenge-copy">
+      <span class="eyebrow on-navy">The Challenge</span>
+      <h2>Navigating <em>Legacy Friction</em> in a Modern Market.</h2>
+      <ul class="challenge-list" style="width: 700px; justify-content: space-evenly;">
+        <li>Outdated UI and branch-based dependency</li>
+        <li>Limited self-service capabilities</li>
+        <li>No fully digital onboarding experience</li>
+        <li>Missing essential features like: biometric authentication, instant payments, real-time interactions</li>
+        <li>Fragmented experience across channels</li>
+        <li>Intense market pressure from fintechs and expectation of younger demographics</li>
+      </ul>
+    </div>
+    <div class="challenge-media" data-od-id="challenge-image" style="transform: translate(-43px, -2px);">
+      <img src="assets/images/banking-01.png" alt="Close-up of a hand reaching into a jacket pocket for a leather wallet holding bank cards" style="width: 499px; transform: translate(196px, 3px); text-align: right;">
+      <div class="quote-card" style="transform: translate(141px, -213px);">
+        <p>"The bank risked losing relevance due to its inability to adapt quickly."</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="methodology" data-od-id="project-methodology">
+    <div class="wrap">
+      <span class="eyebrow">Project Methodology</span>
+      <div class="method-grid">
+        <div class="method-card" data-od-id="method-discovery">
+          <div class="num">01</div>
+          <h3>Discovery</h3>
+          <ul>
+            <li>Market and competitor analysis for fintech benchmarks</li>
+            <li>Facilitated stakeholder workshops to align on vision and priorities</li>
+            <li>Identification of critical user journeys (Onboarding and registration, Account management &amp; Payments and transactions)</li>
+          </ul>
+        </div>
+        <div class="method-card" data-od-id="method-define">
+          <div class="num">02</div>
+          <h3>Define</h3>
+          <ul>
+            <li>Creation of IA for mobile and web platforms</li>
+            <li>Designing end-to-end flows across key journeys</li>
+            <li>Prioritizing digital self-service, speed efficiency, modern UI and reduced dependency on physical branches</li>
+          </ul>
+        </div>
+        <div class="method-card" data-od-id="method-design">
+          <div class="num">03</div>
+          <h3>Design</h3>
+          <ul>
+            <li>Mobile-first approach, later scaling to web experience</li>
+            <li>Iterative usability testing cycles to refine logic</li>
+            <li>Focused on simplifying user flows and improving accessibility overall</li>
+            <li>Evolution into a robust, scalable banking design system</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="outcome" data-od-id="outcome-section" style="height: 607px; margin-top: 0px; padding-left: 50px; padding-top: 100px; padding-right: 0px;">
+    <div class="outcome-top" style="width:100%; max-width:none; margin:0; padding:0; transform:none;">
+  <div class="outcome-left" style="width:auto; max-width:none; margin:0;">
+    <span class="eyebrow on-navy">Outcome</span>
+    <h2>Key <span class="fade">Contributors</span></h2>
+
+    <ul style="width:auto; margin:0;">
+      <li>End-to-end mobile banking app</li>
+      <li>Fully reimagined online banking platform</li>
+      <li>Digital onboarding experience for registration and loans</li>
+      <li>Built scalable design system for banking</li>
+      <li>Consistent omni-channel experience</li>
+    </ul>
+  </div>
+
+  <div class="impact-card" data-od-id="lead-impact-card" style="margin: 0px; transform: translate(22px, -63px); z-index: 1; height: 529px; padding-bottom: 100px;">
+    <span class="eyebrow">Lead Impact</span>
+
+    <ul>
+      <li>Led a team of 6 designers across a multi-phase transformation</li>
+      <li>Facilitated workshops to align stakeholders and drive decision-making</li>
+      <li>Co-created and presented the design pitch that secured the project</li>
+      <li>Defined onboarding and core banking flows</li>
+      <li>Played a key role in building and scaling the design system</li>
+      <li>Established structured design review and feedback processes</li>
+    </ul>
+  </div>
+
+  <div class="outcome-media" data-od-id="outcome-image" style="margin:0;">
+    <img src="assets/images/banking-02.png" alt="Angled close-up of multiple phones showing the redesigned mobile banking app screens" style="transform: translate(-1px, -95px); width: 100%; height: 114%; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: -5px;">
+  </div>
+</div>
+  </section>
+
+  <section class="stats-section" data-od-id="measurable-impact">
+    <div class="wrap">
+      <span class="eyebrow">Measurable Impacts and Business Outcome</span>
+      <div class="stat-trio">
+        <div>
+          <div class="num">63%</div>
+          <div class="cap">New accounts opened online</div>
+        </div>
+        <div>
+          <div class="num">46%</div>
+          <div class="cap">Increase in digital channel registrations<br>product impact</div>
+        </div>
+        <div>
+          <div class="num">250%</div>
+          <div class="cap">In mobile transactions within one year</div>
+        </div>
+      </div>
+      <div class="quote-grid">
+        <div class="qcell"><strong>116% growth</strong> in mobile app registrations, indicating strong user adoption of the new experience</div>
+        <div class="qcell">Improved usability across core banking journeys</div>
+        <div class="qcell">Reduced onboarding time to ~<strong>5 minutes</strong></div>
+        <div class="qcell">Expanded reach to younger, digital-first users</div>
+      </div>
+      <div class="full-stat">
+        <span>Strong financial growth, including <strong>113%</strong> increase in net profit (FY2025)</span>
+        <span class="arrow">↗</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="leadership" data-od-id="leadership-growth">
+    <div class="wrap lead-top" style="height: 585.5px; padding-left: 36px;">
+      <div class="lead-copy">
+        <span class="eyebrow on-navy">Leadership &amp; Growth</span>
+        <h2>Transitioning from execution to <em>strategic leadership.</em></h2>
+        <ul class="lead-list">
+          <li>Managed a team of designers across multiple workstreams</li>
+          <li>Balanced stakeholder expectations with user needs</li>
+          <li>Ensured consistency and quality across all deliverables</li>
+          <li>Scaled design processes for long-term transformation</li>
+        </ul>
+      </div>
+      <div class="achievement-card" data-od-id="additional-achievement" style="transform: translate(-25px, -54px);">
+        <span class="eyebrow">Additional Achievement</span>
+        <ul>
+          <li>Led pre-sales design efforts by presenting white-label versions of the redesigned experience to two Australian banks, successfully converting both into clients.</li>
+          <li>Collaborated closely with one client post-sale to enhance their digital loan onboarding experience.</li>
+          <li>Transformed complex, branch-dependent application forms into a streamlined, step-based flow that could be completed in under 10 minutes.</li>
+          <li>Improved usability and increased self-service adoption through a conversational, user-friendly interaction design.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lead-media" data-od-id="loan-flow-image" style="background-color: rgb(255, 255, 255); padding-bottom: 0px; padding-top: 0px;">
+      <div class="wrap" style="padding:0;">
+        <img src="assets/images/banking-03.png" alt="Redesigned home loan application flow showing applicant details, financial details and joint applicant review screens" style="transform: translate(8px, -40px); padding-top: 3px; padding-bottom: 5px;">
+      </div>
+    </div>
+  </section>
+
+  <section class="final" data-od-id="final-thoughts" style="padding-top: 80px;">
+    <div class="wrap">
+      <span class="eyebrow">Final Thoughts</span>
+      <h2>This project enabled the bank's shift to a <em>digital-first model</em>, driving adoption and engagement through human-centered design.</h2>
+      <p class="sub">It reinforced the importance of systems thinking and stakeholder alignment in designing for long-term business impact.</p>
+      <div class="confidentiality" data-od-id="confidentiality-note">
+        <div class="label">Confidentiality Note</div>
+        <p>Due to NDA agreements, specific brand visuals and internal flows cannot be shared. This showcase focuses on methodology, design decisions, and measurable results.</p>
+      </div>
+      <div class="cta-wrap">
+        <a class="view-projects" href="index.html#work" data-od-id="cta-view-other-projects" style="display:inline-block;text-decoration:none;">View other projects</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">© Saili B. — Case study for portfolio purposes only.</footer>
+
+
+
+</body></html>
