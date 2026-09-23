@@ -292,7 +292,8 @@
   .wr-link:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
   @media (max-width:900px){
     .work-row, .work-row.reverse{grid-template-columns:1fr;}
-    .work-row.reverse .wr-visual, .work-row.reverse .wr-copy{order:initial;}
+    .work-row .wr-copy{order:1;}
+    .work-row .wr-visual{order:2;}
   }
   @media (max-width:900px){
     .wr-visual img{min-height:0;height:auto;aspect-ratio:16/9;}
@@ -529,6 +530,11 @@
   }
   @media (prefers-reduced-motion:reduce){
     .work-row .wr-visual img,.career-item{transition:none;}
+  }
+  @media (max-width:900px){
+    .work-row,.work-row.reverse{grid-template-columns:1fr;}
+    .work-row .wr-copy{order:1;}
+    .work-row .wr-visual{order:2;}
   }
 </style>
 </head>
