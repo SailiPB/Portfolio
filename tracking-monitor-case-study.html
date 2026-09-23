@@ -5,21 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tracking Monitor — A Case Study by Saili B.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;1,8..60,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#EEEBE0;
-    --paper-2:#E6E2D4;
-    --ink:#171A1F;
-    --ink-soft:#4A4D54;
-    --navy:#1C2B4A;
-    --navy-deep:#0E1526;
-    --red:#B23A2A;
-    --line:#CFC9B8;
-    --white:#FCFBF7;
+    --paper:#fbfcfe;
+    --paper-2:#f1f6ff;
+    --ink:#111827;
+    --ink-soft:#465166;
+    --navy:#1668e8;
+    --navy-deep:#0e162b;
+    --red:#7955e8;
+    --line:#dce3ee;
+    --white:#ffffff;
+    --blue:#1668e8;
+    --purple:#7955e8;
+    --amber:#ef8b28;
     --mono: 'IBM Plex Mono', monospace;
     --serif: 'Source Serif 4', Georgia, serif;
-    --grotesk: 'Space Grotesk', sans-serif;
+    --grotesk: 'Manrope', sans-serif;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -27,14 +30,14 @@
     margin:0;
     background:var(--paper);
     color:var(--ink);
-    font-family:var(--serif);
-    font-size:17px;
-    line-height:1.7;
+    font-family:var(--grotesk);
+    font-size:16px;
+    line-height:1.65;
     -webkit-font-smoothing:antialiased;
   }
   img{max-width:100%;display:block;}
   a{color:inherit;}
-  ::selection{background:var(--red);color:var(--white);}
+  ::selection{background:var(--blue);color:var(--white);}
 
   /* ---------- Skip to content ---------- */
   .skip-link{position:absolute;left:-999px;top:0;background:var(--red);color:var(--white);padding:.6rem 1rem;z-index:200;}
@@ -45,7 +48,7 @@
     position:sticky;top:0;z-index:100;
     display:flex;justify-content:space-between;align-items:center;
     padding:.85rem 1.6rem;
-    background:rgba(238,235,224,.92);
+    background:rgba(251,252,254,.92);
     backdrop-filter:blur(6px);
     border-bottom:1px solid var(--line);
     font-family:var(--mono);
@@ -65,7 +68,14 @@
   }
   .topbar .talk-btn:hover{background:var(--red);border-color:var(--red);color:var(--white);}
   .topbar .right-group{display:flex;align-items:center;gap:1.6rem;}
-  @media (max-width:760px){ .topbar .global-nav{display:none;} }
+  .menu{display:none;border:0;background:none;color:var(--ink);font:500 20px var(--mono);cursor:pointer;padding:0;}
+  @media (max-width:760px){
+    .topbar .global-nav{display:none;}
+    .menu{display:block;}
+    .topbar{padding:.85rem 6vw;}
+    .topbar .global-nav.open{position:absolute;top:100%;left:0;right:0;display:flex;flex-direction:column;gap:0;padding:.8rem 6vw 1rem;background:var(--paper);border-bottom:1px solid var(--line);}
+    .topbar .global-nav.open a{display:block;padding:.65rem 0;}
+  }
 
   /* ---------- Progress spine ---------- */
   .spine-wrap{
@@ -99,10 +109,10 @@
   .waypoint{
     display:flex;align-items:center;gap:.6rem;
     font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;
-    color:var(--red);margin-bottom:1.4rem;
+    color:var(--blue);margin-bottom:1.4rem;
   }
   .waypoint::before{
-    content:'';width:7px;height:7px;border-radius:50%;background:var(--red);
+    content:'';width:7px;height:7px;border-radius:50%;background:var(--blue);
     flex:none;
   }
   .grid{
@@ -114,61 +124,80 @@
     letter-spacing:.04em;padding-top:.3rem;
   }
   h2{
-    font-family:var(--grotesk);font-weight:600;font-size:clamp(1.6rem,3vw,2.3rem);
-    letter-spacing:-.01em;margin:0 0 1.4rem;line-height:1.15;
+    font-family:var(--grotesk);font-weight:700;font-size:clamp(2rem,4vw,3.7rem);
+    letter-spacing:-.065em;margin:0 0 1.4rem;line-height:1.04;
   }
   h3{
-    font-family:var(--grotesk);font-weight:600;font-size:1.25rem;
+    font-family:var(--grotesk);font-weight:700;font-size:1.25rem;
     margin:0 0 .6rem;letter-spacing:-.005em;
   }
   p{margin:0 0 1.1rem;max-width:66ch;color:var(--ink);}
-  .lede{font-size:1.2rem;color:var(--ink-soft);max-width:56ch;}
+  .lede{font-size:clamp(1rem,1.35vw,1.28rem);line-height:1.65;color:var(--ink-soft);max-width:56ch;}
   .stack>*+*{margin-top:2.4rem;}
 
   /* ---------- Hero ---------- */
   .hero{
-    background:var(--navy-deep);
-    color:var(--white);
-    padding:7rem 1.6rem 5rem;
+    background:var(--paper);
+    color:var(--ink);
+    min-height:calc(100vh - 68px);
+    max-width:none;
+    padding:8vh 7vw 6rem;
+    display:grid;
+    grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+    align-items:center;
+    gap:clamp(2rem,5vw,6rem);
+    border-bottom:1px solid var(--line);
     position:relative;
     overflow:hidden;
   }
   .hero::after{
     content:'';position:absolute;inset:0;
     background:
-      linear-gradient(180deg, transparent 60%, var(--navy-deep) 100%),
-      repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 120px);
+      linear-gradient(180deg, transparent 60%, rgba(22,104,232,.04) 100%),
+      repeating-linear-gradient(90deg, rgba(22,104,232,.045) 0 1px, transparent 1px 120px);
     pointer-events:none;
   }
-  .hero-inner{max-width:1180px;margin:0 auto;position:relative;}
+  .hero-inner{max-width:680px;margin:0;position:relative;justify-self:end;width:100%;z-index:2;}
   .hero .tag{
-    font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:#8FA0C4;
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--blue);
     margin-bottom:2rem;display:flex;gap:.5rem;align-items:center;
   }
   .hero .tag .dot{width:6px;height:6px;border-radius:50%;background:var(--red);}
   .hero h1{
-    font-family:var(--grotesk);font-weight:600;
-    font-size:clamp(2.4rem,6vw,4.4rem);
-    line-height:1.04;letter-spacing:-.02em;
+    font-family:var(--grotesk);font-weight:700;
+    font-size:clamp(2.8rem,5.8vw,5.8rem);
+    line-height:.98;letter-spacing:-.075em;
     margin:0 0 1.8rem;max-width:14ch;
   }
   .hero .sub{
-    font-family:var(--serif);font-size:1.25rem;color:#C7CEDD;
+    font-family:var(--serif);font-size:1.22rem;color:var(--ink-soft);
     max-width:52ch;margin-bottom:3.4rem;
   }
   .manifest-row{
     display:grid;grid-template-columns:repeat(4,1fr);
-    border-top:1px solid rgba(255,255,255,.18);
+    border-top:1px solid var(--line);
     padding-top:1.6rem;gap:1.5rem;
   }
-  .manifest-row div{font-family:var(--mono);font-size:.72rem;color:#8FA0C4;letter-spacing:.04em;}
-  .manifest-row div b{display:block;font-family:var(--grotesk);font-size:.95rem;font-weight:500;color:var(--white);margin-top:.35rem;letter-spacing:0;}
+  .manifest-row div{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);letter-spacing:.04em;}
+  .manifest-row div b{display:block;font-family:var(--grotesk);font-size:.95rem;font-weight:700;color:var(--ink);margin-top:.35rem;letter-spacing:0;}
+  .hero-screen{position:relative;justify-self:start;width:min(100%,620px);transform:perspective(1000px) rotateY(-4deg) rotateX(2deg);filter:drop-shadow(0 35px 36px rgba(16,45,82,.16));}
+  .hero-screen img{width:100%;display:block;border:1px solid #33415c;}
+  .signal-card{position:absolute;z-index:3;right:-28px;top:-28px;background:var(--blue);color:white;padding:14px 17px;font:500 10px var(--mono);letter-spacing:.08em;box-shadow:0 10px 22px #0c193444;}
+  .signal-card b{color:#af9df7;margin:0 4px;}
+  .hero-screen::after{content:'FIG. 01 — TRACKING MONITOR OVERVIEW';position:absolute;left:0;bottom:-2.2rem;font:500 10px var(--mono);letter-spacing:.08em;color:var(--ink-soft);}
+  em{font-style:normal;color:var(--blue);}
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;min-height:auto;padding-top:7rem;}
+    .hero-inner{justify-self:start;max-width:760px;}
+    .hero-screen{justify-self:start;width:min(100%,700px);margin:1.5rem 0 1.8rem;transform:none;}
+    .signal-card{right:-8px;top:-20px;}
+  }
   @media (max-width:760px){ .manifest-row{grid-template-columns:1fr 1fr;} }
 
   /* ---------- Ledger (problem section) ---------- */
   .ledger{
     display:grid;grid-template-columns:1fr 1fr;
-    border:1px solid var(--line);
+    border:1px solid var(--line);background:var(--white);
     margin-top:2.6rem;
   }
   .ledger>div{padding:1.8rem 2rem;}
@@ -192,6 +221,17 @@
     margin:2.6rem 0;
     max-width:48ch;
   }
+  .signal-bridge{
+    display:grid;grid-template-columns:1fr auto 1fr auto 1.15fr;align-items:center;gap:12px;
+    margin-top:3rem;padding:1px;border:1px solid #bfcde1;background:#bfcde1;
+  }
+  .signal-bridge div{min-height:108px;padding:1.25rem;background:var(--white);}
+  .signal-bridge div.active{background:var(--navy-deep);color:var(--white);}
+  .signal-bridge b{display:block;font:500 .68rem var(--mono);letter-spacing:.08em;color:var(--blue);margin-bottom:.65rem;}
+  .signal-bridge .active b{color:#af9df7;}
+  .signal-bridge span{display:block;font-size:.85rem;line-height:1.45;color:var(--ink-soft);}
+  .signal-bridge .active span{color:#c7cedd;}
+  .signal-bridge i{font-style:normal;color:var(--blue);font-size:1.2rem;text-align:center;}
 
   /* ---------- Persona ledger table ---------- */
   .persona-table{width:100%;border-collapse:collapse;margin-top:2rem;font-size:.96rem;}
@@ -213,7 +253,7 @@
   }
 
   .callout{
-    background:var(--navy);color:var(--white);
+    background:var(--navy-deep);color:var(--white);
     padding:2rem 2.2rem;margin-top:2.6rem;
     display:flex;gap:1.4rem;align-items:flex-start;
   }
@@ -263,7 +303,7 @@
   .frame{
     background:var(--white);
     border:1px solid var(--line);
-    box-shadow:10px 10px 0 var(--paper-2);
+    box-shadow:10px 10px 0 #e7effc;
     padding:.6rem;
   }
   .frame img{width:100%;height:auto;}
@@ -320,6 +360,9 @@
   }
   .signoff a{color:var(--navy);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;}
 
+  #users,#decision,#outcome{max-width:none;padding-left:max(1.6rem,calc((100% - 1180px) / 2 + 1.6rem));padding-right:max(1.6rem,calc((100% - 1180px) / 2 + 1.6rem));}
+  #users > .grid,#decision > .grid,#outcome > .grid{max-width:1180px;margin:0 auto;}
+
   footer{
     background:var(--navy-deep);color:#8FA0C4;
     padding:2.4rem 1.6rem;text-align:center;
@@ -329,6 +372,11 @@
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     .spine-fill{transition:none;}
+  }
+  @media (max-width:700px){
+    .signal-bridge{grid-template-columns:1fr;gap:1px;}
+    .signal-bridge i{padding:.4rem;transform:rotate(90deg);}
+    #users,#decision,#outcome{padding-left:1.6rem;padding-right:1.6rem;}
   }
 </style>
 </head>
@@ -352,6 +400,7 @@
     <li><a href="index.html#contact">CONTACT</a></li>
   </ul>
   <a class="talk-btn" href="index.html#contact">LET'S TALK</a>
+  <button class="menu" aria-label="Toggle navigation" aria-expanded="false">☰</button>
 </div>
 
 <main id="main">
@@ -360,14 +409,18 @@
 <section class="hero">
   <div class="hero-inner">
     <div class="tag"><span class="dot"></span> CASE STUDY · MANIFEST NO. TM-2024 · SUPPLY CHAIN COMMAND CENTER</div>
-    <h1>A shipment goes dark somewhere between the warehouse and the customer's inbox.</h1>
-    <p class="sub">Nobody could say where, why, or who it would hit — because the system that showed where things were and the system that showed what they meant had never spoken to each other. This is the story of building the view that connects them.</p>
+    <h1>Tracking <em>Monitor.</em></h1>
+    <p class="sub">Connecting live shipment activity to the orders, commitments, and customers behind it, so enterprise teams can move from signal to decision with confidence.</p>
     <div class="manifest-row">
       <div>ROLE<b>Lead UX Designer</b></div>
       <div>DURATION<b>6 months</b></div>
       <div>SURFACE<b>Web, enterprise</b></div>
       <div>TEAM<b>PM · Eng · Design</b></div>
     </div>
+  </div>
+  <div class="hero-screen">
+    <div class="signal-card">PLAN <b>→</b> EXECUTION <b>→</b> IMPACT</div>
+    <img src="assets/images/tracking-00.png" alt="Tracking Monitor overview showing shipment clusters and delivery status" width="1254" height="1254">
   </div>
 </section>
 
@@ -377,9 +430,9 @@
     <div class="railcol">01</div>
     <div>
       <div class="waypoint">ORIGIN</div>
-      <h2>Two systems that told half a story each.</h2>
-      <p class="lede">OpenText's supply chain customers ran on two separate views: one showed what had been <em>planned</em> — orders, commitments, line items. The other showed what was <em>happening</em> — live shipment scans, GPS pings, carrier updates. Both were accurate. Neither was useful alone.</p>
-      <p>A customer service rep fielding "where's my order" had to open a tracking tool to find the shipment, then flip to a transactional system to find the order it belonged to, then do the arithmetic herself to figure out who was affected and how badly. Multiply that by a few hundred shipments a day, across a handful of roles who each needed a different slice of the same answer, and the gap stops being an inconvenience — it becomes the job.</p>
+      <h2>Two systems. One missing connection.</h2>
+      <p class="lede">OpenText's supply chain customers worked across two accurate but disconnected views: one showed what had been <em>planned</em> — orders, commitments, and line items. The other showed what was <em>happening</em> — live shipment scans, GPS pings, and carrier updates.</p>
+      <p>When a customer service rep asked "where's my order," they had to find the shipment in one tool, locate its order in another, and calculate the business impact themselves. Across a few hundred shipments a day and several roles, reconciliation had become part of the work.</p>
 
       <div class="ledger">
         <div>
@@ -409,10 +462,17 @@
     <div class="railcol">02</div>
     <div>
       <div class="waypoint">WHY IT MATTERED</div>
-      <h2>Every reconciliation was a small tax on trust.</h2>
-      <p>Tracking data without business context is a map with no destinations on it. Business data without live tracking is a plan that stops being true the moment a truck leaves the dock. OpenText had built strong versions of both — the cost was showing up in the seams between them: manual cross-referencing, delayed detection of disruptions, and decisions made on a shipment's status without knowing what it was actually worth.</p>
+      <h2>A status is only useful when it has consequences.</h2>
+      <p>Tracking data without business context is a map without destinations. Business data without live tracking is a plan that stops being true when a truck leaves the dock. The cost of keeping both views apart showed up as manual cross-referencing, delayed detection, and decisions made without knowing what a shipment was worth.</p>
       <blockquote class="pullquote">Users cannot effectively monitor and act on shipment disruptions because planning and execution data are fragmented and lack contextual linkage.</blockquote>
-      <p>That line became the brief. Not "build a tracking dashboard" — build the connective tissue that lets someone move from noticing a problem to understanding its business impact without leaving the screen.</p>
+      <p>That became the brief: not another tracking dashboard, but a connected investigation path that lets someone move from noticing a problem to understanding its business impact without leaving the screen.</p>
+      <div class="signal-bridge" aria-label="Connecting planning data, live shipment data, and business impact">
+        <div><b>PLANNING</b><span>Orders · commitments · line items</span></div>
+        <i>+</i>
+        <div><b>EXECUTION</b><span>Scans · GPS · carrier updates</span></div>
+        <i>→</i>
+        <div class="active"><b>BUSINESS CONTEXT</b><span>What changed · who is affected</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -424,7 +484,7 @@
     <div>
       <div class="waypoint">WHO'S WAITING ON THE ANSWER</div>
       <h2>Three roles, three altitudes, one shared blind spot.</h2>
-      <p class="lede">Discovery sessions and persona mapping surfaced three groups who touched shipment data daily — each working at a different zoom level, but hitting the same wall.</p>
+      <p class="lede">Discovery sessions and persona mapping surfaced three groups who touched shipment data daily. Their roles differed, but each needed to connect an operational change to the people and work it affected.</p>
 
       <table class="persona-table">
         <thead>
@@ -467,7 +527,7 @@
     <div>
       <div class="waypoint">THE DECISION</div>
       <h2>Merge everything into one table, or let people drill down?</h2>
-      <p class="lede">The most tempting shortcut was a single mega-table — shipments and their orders flattened into one grid, every column available at once. It would have technically satisfied every persona's data needs. It's also the version I turned down.</p>
+      <p class="lede">The tempting shortcut was a single mega-table: shipments and orders flattened into one dense grid. It would technically satisfy every data need, but it would make the first decision harder for everyone.</p>
 
       <div class="fork">
         <div class="rejected">
@@ -538,7 +598,7 @@
     <div>
       <div class="waypoint">IN TRANSIT</div>
       <h2>Four screens, one continuous line of thought.</h2>
-      <p class="lede">Each view answers the question the last one raised. The dashboard says something's wrong; the shipment says where and why; the order says who it affects. Nobody has to remember which system to open next — the product remembers for them.</p>
+      <p class="lede">Each view answers the question raised by the last one. The dashboard says something changed; the shipment explains where and why; the order shows who it affects. The product carries context forward so users can keep investigating instead of restarting.</p>
     </div>
   </div>
 
@@ -708,6 +768,14 @@
 </footer>
 
 <script>
+  const menu = document.querySelector('.menu');
+  const globalNav = document.querySelector('.global-nav');
+  menu?.addEventListener('click', () => {
+    const isOpen = globalNav.classList.toggle('open');
+    menu.setAttribute('aria-expanded', String(isOpen));
+    menu.textContent = isOpen ? '×' : '☰';
+  });
+
   // Scroll progress spine
   (function(){
     var fill = document.getElementById('spineFill');
