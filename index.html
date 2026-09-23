@@ -179,57 +179,77 @@
 
   /* Featured case study — Tracking Monitor */
   .featured-case{
-    border-top:1px solid var(--border);padding-top:clamp(32px,5vw,56px);margin-bottom:clamp(72px,10vw,120px);
+    display:grid;grid-template-columns:minmax(0, 1fr) 610px;gap:clamp(18px,2vw,28px);align-items:start;
+    border-top:1px solid var(--border);padding-top:clamp(16px,2.5vw,24px);margin-bottom:clamp(36px,6vw,72px);
   }
   .featured-case .fc-label{
-    display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.8rem;flex-wrap:wrap;gap:1rem;
+    display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1rem;flex-wrap:wrap;gap:.7rem;
   }
   .featured-case .fc-label .eyebrow{margin-bottom:0;}
   .featured-case .fc-meta{font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.06em;}
   .featured-case h3{
-    font-size:clamp(2rem,4.8vw,3.8rem);line-height:1.04;font-weight:700;max-width:16ch;margin-bottom:1.2rem;
+    font-size:clamp(2rem,4.8vw,3.8rem);line-height:1.04;font-weight:700;max-width:16ch;margin-bottom:1rem;
   }
   .featured-case .fc-quote{
     font-family:var(--serif);font-style:italic;font-size:clamp(1.1rem,1.9vw,1.5rem);color:var(--muted);
-    max-width:44ch;line-height:1.5;margin-bottom:2.2rem;
+    max-width:44ch;line-height:1.5;margin-bottom:1.2rem;
   }
   .fc-visual{
-    position:relative;border:1px solid var(--border);background:var(--surface);
-    padding:clamp(14px,2.4vw,28px);margin-bottom:clamp(28px,4vw,48px);
+    position:relative;border:1px solid var(--border);background:var(--surface);padding:clamp(10px,1.4vw,16px);
+    grid-column:2;grid-row:1 / span 5;align-self:center;display:flex;flex-direction:column;justify-content:center;
+    width:min(100%, 610px);max-width:610px;justify-self:end;margin-left:0;
   }
-  .fc-visual img{width:100%;height:auto;border:1px solid var(--border-soft);}
+  .fc-visual img{
+    width:100%;height:420px;object-fit:cover;border:1px solid var(--border-soft);display:block;
+  }
   .fc-visual .fc-visual-cap{
-    font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.05em;padding-top:.9rem;
+    font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.05em;padding-top:.9rem;margin:0;
   }
+  .featured-case .narrative-strip,
+  .featured-case .fc-footer{grid-column:1;}
   .narrative-strip{
-    display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:clamp(1rem,2vw,2rem);align-items:start;
-    margin-bottom:2.4rem;
+    display:grid;grid-template-columns:1fr;gap:0;align-items:start;
+    margin:0 0 .9rem;max-width:700px;width:100%;
   }
-  .narrative-strip .arrow{
-    font-family:var(--mono);color:var(--accent);font-size:1.3rem;align-self:center;padding-top:1.6rem;
+  .narrative-strip .arrow{display:none;}
+  .narrative-step{
+    padding:.7rem 0;border-top:1px solid var(--border-soft);
   }
+  .narrative-step:first-child{padding-top:0;border-top:none;}
   .narrative-step .step-label{
-    font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--accent);margin-bottom:.8rem;
+    font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--accent);margin-bottom:.55rem;text-transform:uppercase;
   }
-  .narrative-step h4{font-size:1.05rem;font-weight:600;margin-bottom:.5rem;line-height:1.3;}
-  .narrative-step p{font-size:.94rem;color:var(--muted);line-height:1.6;}
+  .narrative-step h4{
+    font-size:clamp(1.4rem,1.8vw,1.9rem);font-weight:600;margin:0 0 .45rem;line-height:1.2;
+  }
+  .narrative-step p{
+    max-width:56ch;font-size:1rem;color:var(--muted);line-height:1.6;margin:0;
+  }
+  .fc-footer{
+    display:flex;flex-direction:column;align-items:flex-start;gap:.75rem;
+    margin-top:4px;max-width:700px;
+  }
+  .featured-case .tag-row{display:flex;flex-wrap:wrap;gap:.5rem;}
+  .featured-case .tag{
+    font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent);background:transparent;border:1px solid var(--border);padding:.38rem .65rem;border-radius:999px;
+  }
+  .featured-case .project-cta{margin-top:0;}
   @media (max-width:820px){
-    .narrative-strip{grid-template-columns:1fr;}
-    .narrative-strip .arrow{display:none;}
-    .narrative-step{padding-bottom:1.2rem;border-bottom:1px solid var(--border-soft);}
+    .narrative-strip{max-width:none;}
+    .narrative-step{padding:.7rem 0;}
+    .fc-footer{max-width:none;}
   }
-  .fc-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.2rem;}
 
   /* Bank — large horizontal split */
   .work-row{
-    display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,64px);align-items:center;
+    display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,64px);align-items:center;
     padding:clamp(40px,6vw,72px) 0;border-top:1px solid var(--border-soft);
   }
-  .work-row.reverse{grid-template-columns:.9fr 1.1fr;}
-  .work-row.reverse .wr-visual{order:2;}
-  .work-row.reverse .wr-copy{order:1;}
-  .wr-visual{border:1px solid var(--border);background:var(--surface);padding:clamp(10px,1.8vw,18px);}
-  .wr-visual img{width:100%;height:auto;}
+  .work-row.reverse{grid-template-columns:1.05fr .95fr;}
+  .wr-visual{order:2;border:1px solid var(--border);background:var(--surface);padding:clamp(10px,1.8vw,18px);}
+  .wr-copy{order:1;}
+  .wr-visual img{width:100%;height:100%;min-height:420px;object-fit:cover;}
   .wr-copy .eyebrow{margin-bottom:1rem;}
   .wr-copy h3{font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.12;font-weight:700;max-width:15ch;margin-bottom:1rem;}
   .wr-copy .wr-quote{
@@ -246,11 +266,22 @@
   .wr-stats .s{font-family:var(--display);}
   .wr-stats .s b{display:block;font-size:1.7rem;font-weight:700;color:var(--fg);}
   .wr-stats .s span{font-family:var(--mono);font-size:10px;color:var(--muted-2);letter-spacing:.04em;}
+
+  .project-cta,
   .wr-link{
-    font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;color:var(--fg);text-decoration:none;
-    border-bottom:1px solid var(--border);padding-bottom:.25rem;
+    display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:#17181a;
+    text-decoration:none;background:var(--fg);border:1px solid var(--fg);
+    padding:.9rem 1.35rem;min-height:46px;transition:transform .15s ease,background .15s ease,color .15s ease,border-color .15s ease,box-shadow .15s ease;
+    box-shadow:0 8px 25px oklch(0 0 0 / 0.12);
   }
-  .wr-link:hover{border-color:var(--accent);color:var(--accent);}
+  .project-cta:hover,
+  .wr-link:hover{
+    background:var(--accent);border-color:var(--accent);color:#0b0c10;transform:translateY(-1px);box-shadow:0 12px 30px oklch(64% 0.15 253 / 0.22);
+  }
+
+  .project-cta:focus-visible,
+  .wr-link:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
   @media (max-width:900px){
     .work-row, .work-row.reverse{grid-template-columns:1fr;}
     .work-row.reverse .wr-visual, .work-row.reverse .wr-copy{order:initial;}
@@ -325,52 +356,28 @@
 
   /* ================= ABOUT ================= */
   .about{padding:clamp(64px,10vw,132px) 0;border-top:1px solid var(--border-soft);}
-  .about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(32px,6vw,80px);align-items:start;}
+  .about-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,6vw,80px);align-items:start;}
   .about h2{font-size:clamp(2rem,4vw,3rem);font-weight:600;line-height:1.12;max-width:11ch;margin-bottom:1.6rem;}
   .about .bio{color:var(--muted);font-size:1.05rem;line-height:1.75;max-width:52ch;}
-  .about-portrait{position:relative;}
-  .about-portrait img{
-    width:100%;height:clamp(420px,42vw,680px);aspect-ratio:4/5;object-fit:cover;object-position:center 16%;
-    filter:grayscale(.1) contrast(1.08);border:1px solid var(--border);
-    border-radius:var(--radius-md);background:#050505;box-shadow:var(--shadow-soft);
-    transition:transform .5s ease,filter .5s ease;
-  }
-  .about-portrait:hover img{transform:translate(-4px,-4px);filter:grayscale(0) contrast(1.08);}
-  .about-portrait .tag-overlay{
-    position:absolute;left:16px;bottom:16px;background:oklch(15.5% 0.008 90 / 0.9);backdrop-filter:blur(6px);
-    border:1px solid var(--border);padding:.8rem 1.2rem;font-family:var(--mono);font-size:12px;letter-spacing:.05em;
-    color:var(--fg);max-width:calc(100% - 32px);border-radius:var(--radius-sm);
-  }
   .skills-cloud{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2rem;}
-  .career{margin-top:clamp(48px,7vw,80px);}
+  .career{margin-top:0;position:relative;padding-left:clamp(1.4rem,3vw,2.5rem);}
+  .career::before{content:'';position:absolute;left:0;top:.2rem;bottom:.2rem;width:1px;background:var(--border);}
   .career-item{
-    display:grid;grid-template-columns:160px 1fr;gap:1.6rem;padding:1.8rem 0;border-top:1px solid var(--border-soft);
+    position:relative;display:grid;grid-template-columns:120px 1fr;gap:1.4rem;padding:1.3rem 1.4rem 1.4rem;
+    border:1px solid var(--border-soft);background:var(--surface);border-radius:var(--radius-md);margin-bottom:1.4rem;
   }
-  .career-item:first-child{border-top:1px solid var(--border);}
-  .career-item .when{font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.04em;padding-top:.2rem;}
+  .career-item::before{content:'';position:absolute;left:calc(clamp(1.4rem,3vw,2.5rem) * -1 - 4px);top:1.15rem;width:7px;height:7px;border-radius:50%;background:var(--muted-2);border:1px solid var(--bg);}
+  .career-item:first-child::before{background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  .career-item .when{font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.04em;padding-top:.2rem;line-height:1.8;}
   .career-item h4{font-size:1.15rem;font-weight:600;margin-bottom:.2rem;}
   .career-item .org{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.04em;margin-bottom:.7rem;display:block;}
   .career-item p{font-size:.92rem;color:var(--muted);line-height:1.6;max-width:56ch;}
   @media (max-width:820px){
     .about-grid{grid-template-columns:1fr;}
-    .about-portrait{max-width:560px;margin:0 auto;width:100%;}
-    .career-item{grid-template-columns:1fr;gap:.3rem;}
-  }
-
-  /* ================= WHAT I BRING ================= */
-  .bring{padding:clamp(64px,10vw,132px) 0;border-top:1px solid var(--border-soft);background:var(--surface);}
-  .bring-head{max-width:34ch;margin-bottom:clamp(48px,7vw,80px);}
-  .bring-head h2{font-size:clamp(2rem,4vw,3rem);font-weight:600;line-height:1.1;}
-  .bring-list{border-top:1px solid var(--border);}
-  .bring-item{
-    display:grid;grid-template-columns:64px 1.1fr 1.6fr;gap:1.6rem;padding:1.9rem 0;border-bottom:1px solid var(--border-soft);align-items:baseline;
-  }
-  .bring-item .bi-num{font-family:var(--display);font-size:1.1rem;color:var(--muted-2);}
-  .bring-item h3{font-size:1.25rem;font-weight:700;letter-spacing:-.01em;}
-  .bring-item p{color:var(--muted);font-size:.98rem;line-height:1.6;}
-  @media (max-width:760px){
-    .bring-item{grid-template-columns:40px 1fr;}
-    .bring-item p{grid-column:2/3;margin-top:.3rem;}
+    .about h2{max-width:none;}
+    .about .bio{max-width:none;}
+    .career{margin-top:clamp(48px,7vw,80px);}
+    .career-item{grid-template-columns:1fr;gap:.3rem;padding:1.2rem 1rem 1.3rem;}
   }
 
   /* ================= CONTACT ================= */
@@ -475,7 +482,7 @@
       <h3>OT Command Center — Tracking Monitor</h3>
       <p class="fc-quote">"Connecting fragmented shipment data so teams can see risk, understand impact, and act earlier."</p>
       <div class="fc-visual">
-        <img src="assets/images/tracking-00.png" alt="Tracking Monitor overview: a world map showing shipment clusters and counts by delivery status, with total shipment and alert counts" width="626" height="364" loading="lazy">
+        <img src="assets/images/tracking-00.png" alt="Tracking Monitor dashboard showing shipment clusters and delivery status on a laptop" width="1254" height="1254" loading="lazy">
         <p class="fc-visual-cap">FIG. 01 — TRACKING MONITOR OVERVIEW, OT COMMAND CENTER</p>
       </div>
       <div class="narrative-strip">
@@ -484,13 +491,11 @@
           <h4>Fragmented visibility</h4>
           <p>Planning and execution data lived in isolation, making it difficult to trace a shipment back to the order it was blocking.</p>
         </div>
-        <div class="arrow">→</div>
         <div class="narrative-step">
           <div class="step-label">APPROACH</div>
           <h4>Unified monitoring</h4>
           <p>Connected live shipment status with business-critical order data through a layered drill-down experience.</p>
         </div>
-        <div class="arrow">→</div>
         <div class="narrative-step">
           <div class="step-label">IMPACT</div>
           <h4>Proactive action</h4>
@@ -501,12 +506,12 @@
         <div class="tag-row">
           <span class="tag">B2B</span><span class="tag">Supply chain</span><span class="tag">AI integrated</span>
         </div>
-        <a class="wr-link" href="tracking-monitor-case-study.html" data-od-id="link-case-tracking">Read the full case study →</a>
+        <a class="project-cta" href="tracking-monitor-case-study.html" data-od-id="link-case-tracking">Read case study →</a>
       </div>
     </article>
 
     <!-- Leading Australian Bank -->
-    <article class="work-row reverse" data-od-id="case-banking">
+    <article class="work-row" data-od-id="case-banking">
       <div class="wr-visual">
         <img src="assets/images/banking-00.png" alt="Redesigned digital banking dashboard shown across desktop, tablet and mobile, plus a close-up array of mobile banking screens" width="1920" height="850" loading="lazy">
       </div>
@@ -527,14 +532,14 @@
         <div class="tag-row" style="margin-bottom:1.6rem;">
           <span class="tag">Banking</span><span class="tag">B2C</span><span class="tag">Design system</span>
         </div>
-        <a class="wr-link" href="banking-case-study.html" data-od-id="link-case-banking">Read the full case study →</a>
+        <a class="project-cta" href="banking-case-study.html" data-od-id="link-case-banking">Read case study →</a>
       </div>
     </article>
 
     <!-- Command Center Integration Monitor (CCIM) -->
     <article class="work-row" data-od-id="case-ccim">
       <div class="wr-visual">
-        <img src="assets/images/ccim-00.jpg" alt="Command Center Integration Monitor dashboard showing daily digest metrics, document transaction summary donut charts, and a transaction volume trend chart" width="1600" height="1213" loading="lazy">
+        <img src="assets/images/ccim-00.jpg" alt="Command Center Integration Monitor showing shipment status timelines and delivery alerts on a laptop" width="1254" height="1254" loading="lazy">
       </div>
       <div class="wr-copy">
         <span class="eyebrow muted">Command Center Integration Monitor · OpenText</span>
@@ -548,7 +553,7 @@
         <div class="tag-row" style="margin-bottom:1.6rem;">
           <span class="tag">Enterprise web app</span><span class="tag">B2B</span><span class="tag">Data visualization</span>
         </div>
-        <a class="wr-link" href="ccim-case-study.html" data-od-id="link-case-ccim">Read the full case study →</a>
+        <a class="project-cta" href="ccim-case-study.html" data-od-id="link-case-ccim">Read case study →</a>
       </div>
     </article>
 
@@ -561,7 +566,7 @@
       <div class="wps-tags tag-row">
         <span class="tag">B2C</span><span class="tag">Mobile UI</span>
       </div>
-      <a class="wr-link" href="https://www.behance.net/sailibandekar27" target="_blank" rel="noopener" data-od-id="link-case-airbnb">View on Behance ↗</a>
+      <a class="project-cta" href="https://www.behance.net/sailipbandekar" target="_blank" rel="noopener" data-od-id="link-case-airbnb">View project ↗</a>
     </div>
   </div>
 </section>
@@ -637,8 +642,9 @@
         <span class="tag">AI-driven product design</span>
         <span class="tag">Data visualization</span>
       </div>
+    </div>
 
-      <div class="career" data-od-id="career-history">
+    <div class="career" data-od-id="career-history">
         <div class="career-item">
           <div class="when">OCT 2024 —<br>PRESENT</div>
           <div>
@@ -671,29 +677,6 @@
             <p>Created digital and print work that shaped the visual and storytelling foundation of this practice.</p>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="about-portrait reveal" data-od-id="about-portrait">
-      <img src="assets/images/profile.png" alt="Illustrated portrait of Saili Bandekar, Product &amp; UX Designer" width="1024" height="1536" loading="lazy">
-      <div class="tag-overlay">SAILI BANDEKAR — PRODUCT &amp; UX DESIGNER</div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= WHAT I BRING ================= -->
-<section class="bring" id="bring" data-od-id="bring-section">
-  <div class="wrap">
-    <div class="bring-head reveal">
-      <span class="eyebrow">What I bring</span>
-      <h2>Five principles that shape how I work.</h2>
-    </div>
-    <div class="bring-list reveal">
-      <div class="bring-item"><span class="bi-num">01</span><h3>Systems thinking</h3><p>Designing beyond individual screens — toward the workflows, roles and data that surround them.</p></div>
-      <div class="bring-item"><span class="bi-num">02</span><h3>Complexity into clarity</h3><p>Making dense operational workflows understandable at a glance, without hiding what matters.</p></div>
-      <div class="bring-item"><span class="bi-num">03</span><h3>AI + product design</h3><p>Exploring how AI can make complex products more actionable, not just more automated.</p></div>
-      <div class="bring-item"><span class="bi-num">04</span><h3>Design systems</h3><p>Creating scalable, consistent experiences that let teams move faster without losing quality.</p></div>
-      <div class="bring-item"><span class="bi-num">05</span><h3>Business and user impact</h3><p>Connecting user needs to measurable outcomes, because a good interface should move a real number.</p></div>
     </div>
   </div>
 </section>
