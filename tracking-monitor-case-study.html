@@ -25,7 +25,7 @@
     --grotesk: 'Manrope', sans-serif;
   }
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;overflow-x:hidden;}
   body{
     margin:0;
     background:var(--paper);
@@ -116,8 +116,9 @@
     flex:none;
   }
   .grid{
-    display:grid;grid-template-columns:120px 1fr;gap:0 3rem;
+    display:grid;grid-template-columns:120px 1fr;gap:0 3rem;min-width:0;
   }
+  .grid > div{min-width:0;}
   @media (max-width:900px){ .grid{grid-template-columns:1fr;} .grid .railcol{display:none;} }
   .railcol{
     font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);
@@ -181,7 +182,7 @@
   .manifest-row div{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);letter-spacing:.04em;}
   .manifest-row div b{display:block;font-family:var(--grotesk);font-size:.95rem;font-weight:700;color:var(--ink);margin-top:.35rem;letter-spacing:0;}
   .hero-screen{position:relative;justify-self:start;width:min(100%,620px);transform:perspective(1000px) rotateY(-4deg) rotateX(2deg);filter:drop-shadow(0 35px 36px rgba(16,45,82,.16));}
-  .hero-screen img{width:100%;display:block;border:1px solid #33415c;}
+  .hero-screen img{width:610px;max-width:100%;height:auto;aspect-ratio:1;object-fit:contain;display:block;border:1px solid #33415c;}
   .signal-card{position:absolute;z-index:3;right:-28px;top:-28px;background:var(--blue);color:white;padding:14px 17px;font:500 10px var(--mono);letter-spacing:.08em;box-shadow:0 10px 22px #0c193444;}
   .signal-card b{color:#af9df7;margin:0 4px;}
   .hero-screen::after{content:'FIG. 01 — TRACKING MONITOR OVERVIEW';position:absolute;left:0;bottom:-2.2rem;font:500 10px var(--mono);letter-spacing:.08em;color:var(--ink-soft);}
@@ -279,18 +280,47 @@
   @media (max-width:700px){ .fork{grid-template-columns:1fr;} .fork .rejected{border-right:none;border-bottom:1px solid var(--line);} }
 
   /* ---------- IA diagram ---------- */
-  .ia-diagram{margin-top:2.6rem;border:1px solid var(--line);background:var(--white);padding:2.2rem;}
-  .ia-level{display:grid;grid-template-columns:110px 1fr;gap:1.6rem;align-items:start;padding:1.1rem 0;position:relative;}
-  .ia-level:not(:last-child){border-bottom:1px dashed var(--line);}
-  .ia-level .lv{font-family:var(--mono);font-size:.68rem;color:var(--red);letter-spacing:.05em;padding-top:.3rem;}
-  .ia-level .lv b{display:block;font-family:var(--grotesk);color:var(--ink);font-size:.9rem;margin-top:.25rem;letter-spacing:0;}
-  .ia-nodes{display:flex;flex-wrap:wrap;gap:.6rem;}
-  .ia-node{
-    border:1px solid var(--ink);padding:.55rem 1rem;font-family:var(--grotesk);font-size:.85rem;font-weight:500;
-    background:var(--paper);
+  .ia-diagram{margin-top:2.6rem;border:1px solid var(--line);background:var(--white);padding:clamp(1.4rem,3vw,3rem);overflow:hidden;}
+  .ia-intro{text-align:center;max-width:66ch;margin:0 auto 3rem;font-family:var(--sans);font-size:.95rem;color:var(--ink-soft);}
+  .ia-intro::after{content:'';display:block;width:42px;height:2px;background:var(--blue);margin:1rem auto 0;}
+  .ia-flow{position:relative;display:grid;gap:2.1rem;}
+  .ia-flow::before{content:'';position:absolute;left:124px;top:1.2rem;bottom:1.2rem;width:1px;background:repeating-linear-gradient(to bottom,var(--blue) 0 7px,transparent 7px 14px);opacity:.5;}
+  .ia-level{display:grid;grid-template-columns:110px minmax(0,1fr) 220px;gap:1.7rem;align-items:center;position:relative;min-height:92px;}
+  .ia-level::before{content:'';position:absolute;left:120px;top:50%;width:10px;height:10px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px var(--paper);transform:translate(-50%,-50%);z-index:2;}
+  .ia-level:not(:last-child)::after{content:'↓';position:absolute;left:calc(120px + (100% - 120px) / 2);bottom:-1.8rem;color:var(--blue);font:700 1.15rem var(--grotesk);transform:translateX(-50%);z-index:3;}
+  .ia-level .lv{font-family:var(--mono);font-size:.68rem;color:var(--blue);letter-spacing:.1em;line-height:1.4;}
+  .ia-level .lv b{display:block;font-family:var(--grotesk);color:var(--ink);font-size:.85rem;margin-top:.35rem;letter-spacing:0;line-height:1.2;}
+  .ia-card{border:1px solid var(--line);background:var(--paper);padding:1rem 1.2rem;min-height:74px;}
+  .ia-card.primary{border-color:var(--blue);background:linear-gradient(135deg,var(--white),var(--paper-2));}
+  .ia-card strong{display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-align:center;margin-bottom:.35rem;}
+  .ia-card p{font-size:.82rem;line-height:1.4;text-align:center;color:var(--ink-soft);margin:0 auto;max-width:48ch;}
+  .ia-card .ia-nodes{display:grid;grid-template-columns:repeat(5,1fr);gap:.45rem;margin-top:1rem;}
+  .ia-node{display:grid;place-items:center;min-height:62px;padding:.5rem .35rem;border:1px solid var(--line);background:var(--paper-2);font-family:var(--mono);font-size:.58rem;line-height:1.25;text-align:center;}
+  .ia-node.active{background:var(--blue);color:var(--white);border-color:var(--blue);}
+  .ia-node strong{font-family:var(--grotesk);font-size:.65rem;letter-spacing:0;margin:0;}
+  .ia-icon{display:grid;place-items:center;width:24px;height:24px;margin:0 auto .35rem;color:var(--ink);}
+  .ia-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5;}
+  .ia-node.active .ia-icon{color:var(--white);}
+  .ia-desc{position:relative;font-family:var(--sans);font-size:.78rem;line-height:1.5;color:var(--ink-soft);background:#f7f8fb;border:1px solid #eef1f6;padding:1rem;}
+  .ia-desc::before{content:'';position:absolute;left:-1.7rem;top:50%;width:1.7rem;border-top:1px solid var(--blue);}
+  .ia-desc::after{content:'';position:absolute;left:-1.85rem;top:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:var(--blue);}
+  .ia-children{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1rem;}
+  .ia-children .ia-node{min-height:54px;background:var(--white);border-color:var(--blue);font-size:.68rem;}
+  .ia-children .ia-node span{display:block;font-family:var(--sans);font-size:.68rem;line-height:1.3;margin-top:.35rem;}
+  @media (max-width:900px){
+    .ia-flow::before{left:14px;}
+    .ia-level{grid-template-columns:1fr;gap:.8rem;padding-left:2.2rem;}
+    .ia-level::before{left:14px;top:1.4rem;}
+    .ia-level .lv{display:flex;align-items:baseline;gap:.7rem;}
+    .ia-level .lv b{display:inline;font-size:.9rem;}
+    .ia-desc{max-width:42rem;}
+    .ia-desc::before,.ia-desc::after{display:none;}
+    .ia-level:not(:last-child)::after{left:14px;bottom:-1.7rem;}
   }
-  .ia-node.active{background:var(--navy);color:var(--white);border-color:var(--navy);}
-  .ia-desc{font-family:var(--serif);font-size:.92rem;color:var(--ink-soft);margin-top:.5rem;max-width:56ch;}
+  @media (max-width:560px){
+    .ia-card .ia-nodes{grid-template-columns:1fr 1fr;}
+    .ia-intro{font-size:.85rem;}
+  }
 
   /* ---------- Solution walkthrough ---------- */
   .walk-item{
@@ -376,7 +406,8 @@
   @media (max-width:700px){
     .signal-bridge{grid-template-columns:1fr;gap:1px;}
     .signal-bridge i{padding:.4rem;transform:rotate(90deg);}
-    #users,#decision,#outcome{padding-left:1.6rem;padding-right:1.6rem;}
+    #users,#decision,#outcome{width:100%;max-width:100%;padding-left:1.6rem;padding-right:1.6rem;}
+    .ia-diagram{width:100%;min-width:0;}
   }
 </style>
 </head>
@@ -420,7 +451,7 @@
   </div>
   <div class="hero-screen">
     <div class="signal-card">PLAN <b>→</b> EXECUTION <b>→</b> IMPACT</div>
-    <img src="assets/images/tracking-00.png" alt="Tracking Monitor overview showing shipment clusters and delivery status" width="1254" height="1254">
+    <img src="assets/images/tracking-00.png" alt="Tracking Monitor overview showing shipment clusters and delivery status" width="610" height="610">
   </div>
 </section>
 
@@ -545,45 +576,25 @@
       <p style="margin-top:2rem;">The trade-off: drill-down costs a click that a flat table wouldn't. What it buys back is a dashboard that stays legible under load — 152 shipments and their alerts, not 152 rows of everything.</p>
 
       <div class="ia-diagram">
-        <div class="ia-level">
-          <div class="lv">LEVEL 0<b>Entry</b></div>
-          <div>
-            <div class="ia-nodes"><div class="ia-node active">TGO Dashboards</div></div>
-            <div class="ia-desc">Entry point across three monitoring workspaces identified through persona mapping.</div>
+        <p class="ia-intro">The actual information architecture developed during the process was significantly more complex. For clarity, a simplified version is presented here to illustrate the core navigation and user pathways.</p>
+        <div class="ia-flow">
+          <div class="ia-level">
+            <div class="lv">LEVEL 0<b>Entry point</b></div>
+            <div class="ia-card primary"><strong>TGO DASHBOARDS</strong><p>Through discovery sessions and persona mapping, three primary user groups were identified.</p></div>
           </div>
-        </div>
-        <div class="ia-level">
-          <div class="lv">LEVEL 1<b>Workspaces</b></div>
-          <div>
-            <div class="ia-nodes">
-              <div class="ia-node">Integration Monitor</div>
-              <div class="ia-node">Risk Monitor</div>
-              <div class="ia-node active">Tracking Monitor</div>
-              <div class="ia-node">Performance Monitor</div>
-              <div class="ia-node">Custom Monitor</div>
-            </div>
-            <div class="ia-desc">The Command Center: a single access point users switch between based on the task at hand.</div>
+          <div class="ia-level">
+            <div class="lv">LEVEL 1<b>Monitoring workspaces</b></div>
+            <div class="ia-card primary"><strong>COMMAND CENTER</strong><p>Central hub of supply chain monitoring and management</p><div class="ia-nodes"><div class="ia-node"><span class="ia-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 3 3 1v6l-3 1-1 3H9l-1-3-3-1V7l3-1 1-3Z"/><path d="M10 10h4v4h-4zM12 7v1M12 16v1M7 12h1M16 12h1"/></svg></span><strong>Integration<br>Monitor</strong></div><div class="ia-node"><span class="ia-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a4 4 0 0 1 4 4v1h1a4 4 0 1 1 0 8h-1v1a4 4 0 1 1-8 0v-1H7a4 4 0 1 1 0-8h1V7a4 4 0 0 1 4-4Z"/><path d="M9 12h6M12 9v6"/></svg></span><strong>Risk<br>Monitor</strong></div><div class="ia-node active"><span class="ia-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M14 13h5"/></svg></span><strong>Tracking<br>Monitor</strong></div><div class="ia-node"><span class="ia-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h17"/><path d="m7 15 4-5 3 3 5-7"/></svg></span><strong>Performance<br>Monitor</strong></div><div class="ia-node"><span class="ia-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-5 4 5 4M16 8l5 4-5 4M14 5l-4 14"/></svg></span><strong>Custom<br>Monitor</strong></div></div></div>
+            <div class="ia-desc">Access point to all monitoring workspaces. Users switch between monitors based on their tasks.</div>
           </div>
-        </div>
-        <div class="ia-level">
-          <div class="lv">LEVEL 2<b>Monitor</b></div>
-          <div>
-            <div class="ia-nodes">
-              <div class="ia-node active">Dashboard</div>
-              <div class="ia-node active">Shipments</div>
-              <div class="ia-node active">Orders</div>
-            </div>
-            <div class="ia-desc">Real-time visibility into status, location, and exceptions — built for scanning and fast decisions.</div>
+          <div class="ia-level">
+            <div class="lv">LEVEL 2<b>Tracking monitor</b></div>
+            <div class="ia-card primary"><strong>TRACKING MONITOR</strong><p>Real-time visibility into shipment status, location, conditions and exceptions</p><div class="ia-nodes"><div class="ia-node active"><strong>DASHBOARD</strong></div><div class="ia-node active"><strong>SHIPMENTS</strong></div><div class="ia-node active"><strong>ORDERS</strong></div></div></div>
+            <div class="ia-desc">Tools to monitor, filter, and understand shipment activity. Designed for scanning and quick decision-making. Detailed context to investigate root cause, assess impact, and take action.</div>
           </div>
-        </div>
-        <div class="ia-level">
-          <div class="lv">LEVEL 3<b>Detail</b></div>
-          <div>
-            <div class="ia-nodes">
-              <div class="ia-node">Shipment detail</div>
-              <div class="ia-node">Order detail</div>
-            </div>
-            <div class="ia-desc">Root-cause context, business impact, and the information needed to actually take action.</div>
+          <div class="ia-level">
+            <div class="lv">LEVEL 3<b>Integration drill down</b></div>
+            <div class="ia-card"><div class="ia-children"><div class="ia-node"><strong>SHIPMENT</strong><span>Shipment listing and shipment details drill down</span></div><div class="ia-node"><strong>ORDER</strong><span>Order listing and order details drill down</span></div></div></div>
           </div>
         </div>
       </div>
