@@ -64,11 +64,11 @@
   .topbar .talk-btn{
     font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;
     background:var(--ink);color:var(--paper);padding:.55rem 1.05rem;text-decoration:none;
-    border:1px solid var(--ink);transition:background .15s ease,color .15s ease,border-color .15s ease;
+    border:1px solid var(--ink);border-radius:999px;transition:background .15s ease,color .15s ease,border-color .15s ease;
   }
   .topbar .talk-btn:hover{background:var(--red);border-color:var(--red);color:var(--white);}
   .topbar .right-group{display:flex;align-items:center;gap:1.6rem;}
-  .menu{display:none;border:0;background:none;color:var(--ink);font:500 20px var(--mono);cursor:pointer;padding:0;}
+  .menu{display:none;border:1px solid var(--line);border-radius:999px;background:none;color:var(--ink);font:500 20px var(--mono);cursor:pointer;padding:.4rem .65rem;}
   @media (max-width:760px){
     .topbar .global-nav{display:none;}
     .menu{display:block;}
