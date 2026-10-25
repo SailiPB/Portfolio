@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A case study on designing an issue log, model-based evidence, and threaded review for OpenText Core Collaboration for Engineering.">
+  <title>Document Reader | Saili Bandekar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;1,8..60,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="header.css">
+  <script src="header.js" defer></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f7f9fc;
+      --panel: #fff;
+      --ink: #111827;
+      --muted: #536078;
+      --blue: #1668e8;
+      --pink: #7955e8;
+      --line: #dce3ee;
+      --soft: #edf3ff;
+      --deep: #0e162b;
+      --sans: 'Manrope', sans-serif;
+      --display: 'Bricolage Grotesque', sans-serif;
+      --serif: 'Source Serif 4', Georgia, serif;
+      --mono: 'IBM Plex Mono', monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 400 16px/1.65 var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; width: 100%; height: auto; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+    .skip-link {
+      position: fixed;
+      top: 8px;
+      left: 8px;
+      z-index: 1200;
+      padding: 10px 14px;
+      transform: translateY(-150%);
+      background: var(--deep);
+      color: #fff;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .layout {
+      display: block;
+      width: min(100% - 64px, 1320px);
+      margin: 0 auto;
+      padding: 102px 0 112px;
+    }
+    .eyebrow, .section-index, .meta-label, .image-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .story { min-width: 0; }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      gap: clamp(28px, 4vw, 56px);
+      align-items: center;
+      padding: 14px 0 48px;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-copy { min-width: 0; }
+    .eyebrow { display: flex; align-items: center; gap: 9px; color: var(--blue); }
+    .eyebrow::before { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); content: ''; }
+    h1, h2, h3, h4 { margin: 0; font-family: var(--display); line-height: 1.08; }
+    h1 { max-width: 12ch; margin-top: 22px; font-size: clamp(42px, 5.3vw, 72px); font-weight: 700; letter-spacing: -.035em; }
+    h1 em, h2 em { color: var(--blue); font-style: normal; }
+    .lede { max-width: 54ch; margin: 22px 0 0; color: var(--muted); font: 500 clamp(18px, 1.6vw, 22px)/1.55 var(--serif); }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px 22px;
+      margin: 32px 0 0;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    .meta div { min-width: 0; }
+    .meta-label { display: block; color: var(--muted); }
+    .meta-value { display: block; margin-top: 4px; font-size: 14px; font-weight: 700; }
+    .placeholder {
+      display: inline;
+      padding: 2px 5px;
+      background: #fff1f6;
+      color: #7a1640;
+      font-weight: 600;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+    .hero-figure { min-width: 0; margin: 0; padding: 10px; border: 1px solid var(--line); background: var(--panel); box-shadow: 12px 12px 0 var(--soft); }
+    .hero-figure img { aspect-ratio: 1.6; object-fit: contain; background: #fff; }
+    figcaption { margin-top: 9px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+    .glance {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 30px;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+    .glance article { min-width: 0; padding: 20px; background: var(--panel); }
+    .glance h2 { margin-bottom: 9px; color: var(--blue); font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .glance p { margin: 0; font-size: 14px; line-height: 1.55; }
+
+    .section { padding: 74px 0 0; scroll-margin-top: 92px; }
+    .section-heading { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 18px; align-items: start; margin-bottom: 24px; }
+    .section-index { padding-top: 8px; color: var(--blue); }
+    h2 { max-width: 22ch; font-size: clamp(28px, 3.2vw, 42px); font-weight: 700; letter-spacing: -.025em; }
+    h3 { margin: 30px 0 9px; font-size: 20px; font-weight: 700; }
+    h4 { font-size: 16px; font-weight: 700; }
+    p { max-width: 70ch; margin: 0 0 16px; }
+    .section-body { min-width: 0; }
+    .section-body > p { color: #2b3547; }
+    .section-body > p + p { margin-top: 10px; }
+    .principles, .decision { margin-top: 26px; padding: 24px; border: 1px solid var(--line); background: var(--panel); }
+    .principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .principles article { min-width: 0; }
+    .principles h3 { margin: 0 0 8px; font-size: 16px; }
+    .principles p { margin: 0; color: var(--muted); font-size: 14px; }
+    .people-lede { margin-bottom: 26px; }
+    .figure-wide { margin: 26px 0; padding: 9px; border: 1px solid var(--line); background: var(--panel); }
+    .figure-wide img { max-height: 660px; object-fit: contain; background: #fff; }
+    .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 22px 0; }
+    .pair figure { min-width: 0; margin: 0; padding: 8px; border: 1px solid var(--line); background: var(--panel); }
+    .pair img { object-fit: contain; background: #fff; }
+    .pair img.portrait { width: auto; max-width: 100%; max-height: 600px; margin: 0 auto; }
+    .note { margin-top: 24px; padding: 17px 20px; border-left: 3px solid var(--pink); background: var(--soft); }
+    .note p { margin: 0; }
+
+    .decision { padding: 22px 24px; }
+    .decision-top { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    .decision-top h3 { margin: 0 0 8px; font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--blue); }
+    .decision-top p { margin: 0; color: #2b3547; font-size: 14px; }
+    .feature-image { margin: 22px 0 0; padding: 8px; border: 1px solid var(--line); background: #fff; }
+    .feature-image img { max-height: 700px; object-fit: contain; }
+    .feature-image figcaption { padding: 0 4px 2px; }
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 24px 0; border: 1px solid var(--line); background: var(--line); }
+    .steps article { padding: 18px; background: var(--panel); }
+    .steps b { display: block; margin-bottom: 8px; color: var(--blue); font: 500 11px var(--mono); text-transform: uppercase; }
+    .steps h3 { margin: 0 0 5px; font-size: 16px; }
+    .steps p { margin: 0; color: var(--muted); font-size: 13px; }
+    .lifecycle { display: flex; align-items: center; gap: 12px; margin: 24px 0; }
+    .lifecycle-step { flex: 1; padding: 15px; border: 1px solid var(--line); background: var(--panel); }
+    .lifecycle-step strong { display: block; font-size: 14px; }
+    .lifecycle-step span { color: var(--muted); font-size: 12px; }
+    .lifecycle-arrow { color: var(--blue); font: 18px var(--mono); }
+    .handoff-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; margin: 20px 0 0; padding: 0; list-style: none; }
+    .handoff-list li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+    .handoff-list li::before { margin-right: 10px; color: var(--blue); content: '↗'; }
+    .reflection-kicker { margin: 0 0 20px; color: var(--blue); font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .reflection-title { max-width: 18ch; margin: 0 0 24px; font-size: clamp(34px, 5.5vw, 68px); letter-spacing: -.035em; }
+    .reflection-lede { max-width: 68ch; color: var(--ink); font: 500 clamp(19px, 2vw, 24px)/1.65 var(--serif); }
+    .reflection-next { max-width: 68ch; margin-top: 28px; color: var(--muted); font-size: 15px; }
+    .footer-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--line); font: 500 12px var(--mono); text-transform: uppercase; }
+    .footer-nav a { color: var(--blue); text-decoration: none; }
+    .footer-nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+    @media (max-width: 980px) {
+      .layout { width: min(100% - 44px, 900px); padding-top: 92px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-figure { max-width: 760px; }
+      .hero-figure img { aspect-ratio: 1.7; }
+    }
+    @media (max-width: 640px) {
+      .layout { width: min(100% - 32px, 520px); padding: 86px 0 72px; }
+      .hero { gap: 25px; padding-bottom: 30px; }
+      h1 { font-size: clamp(38px, 11vw, 52px); }
+      .lede { font-size: 18px; }
+      .meta { grid-template-columns: 1fr 1fr; gap: 13px; margin-top: 24px; }
+      .meta-value { font-size: 13px; }
+      .hero-figure { padding: 6px; }
+      .glance { grid-template-columns: 1fr; }
+      .glance article { padding: 17px; }
+      .section { padding-top: 54px; }
+      .section-heading { grid-template-columns: 42px minmax(0, 1fr); gap: 10px; }
+      .section-index { font-size: 10px; }
+      .principles, .decision { padding: 17px; }
+      .principles, .decision-top, .pair, .steps, .handoff-list { grid-template-columns: 1fr; }
+      .principles { gap: 18px; }
+      .pair { gap: 12px; }
+      .lifecycle { align-items: stretch; flex-direction: column; }
+      .lifecycle-arrow { align-self: center; transform: rotate(90deg); }
+      .footer-nav { align-items: flex-start; flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-nav" id="siteNav">
+    <a class="brand" href="index.html#top">Saili Bandekar<span class="dot" aria-hidden="true"></span></a>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-navigation">☰</button>
+    <ul class="nav-links" id="site-navigation">
+      <li><a href="index.html#top">Home</a></li>
+      <li><a href="work.html#projects">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="https://drive.google.com/file/d/11xnpkp3scNq9Za6gYi-1OitTIbmNhtTH/view" target="_blank" rel="noopener noreferrer">Resume</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="mailto:sailibandekar27@gmail.com">Get in touch ↗</a>
+  </header>
+
+  <div class="layout">
+    <main class="story" id="main">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Case study / Document collaboration</p>
+          <h1>Raising issues directly <em>on the model</em></h1>
+          <p class="lede">Designing the document reader for OpenText Core Collaboration for Engineering, where owners and suppliers settle design questions before they turn into rework.</p>
+          <dl class="meta">
+            <div><dt class="meta-label">Product</dt><dd class="meta-value">Core Collaboration for Engineering</dd></div>
+            <div><dt class="meta-label">Focus</dt><dd class="meta-value">Document reader and issue log</dd></div>
+            <div><dt class="meta-label">Role</dt><dd class="meta-value">Product Designer / UX Designer</dd></div>
+          </dl>
+        </div>
+        <figure class="hero-figure">
+          <img src="assets/images/document-reader-01.jpg" alt="Document reader showing a 3D model, properties panel, and a threaded issue detail panel." width="1800" height="1125" fetchpriority="high">
+          <figcaption>Model context and the issue thread remain visible together.</figcaption>
+        </figure>
+      </header>
+
+      <section class="glance" aria-label="Case study summary">
+        <article><h2>Challenge</h2><p>Feedback on engineering deliverables scattered across email and marked-up files, away from the part of the model it described.</p></article>
+        <article><h2>Approach</h2><p>An issue log inside the reader, so every comment is anchored to a view, a mark-up, or a selected part.</p></article>
+        <article><h2>Result</h2><p>A traceable review loop where every comment stays connected to the exact document context, discussion, and resolution.</p></article>
+      </section>
+
+      <section class="section" id="context" aria-labelledby="context-title">
+        <div class="section-heading"><span class="section-index">01 / Context</span><h2 id="context-title">Why the reader matters</h2></div>
+        <div class="section-body">
+          <p>Core Collaboration for Engineering is a cloud workspace where owner/operators exchange contract deliverables and transmittals with suppliers, without email, FTP, or shared drives. Suppliers work in a separate space, so the owner’s main repository stays protected.</p>
+          <p>The reader is where those deliverables are examined. It opens 2D drawings and 3D models in the browser, and it is where the feedback loop either works or breaks. When it breaks, mistakes surface late as delays, missed SLAs, and costly rework.</p>
+          <div class="note"><p><strong>The design problem:</strong> A reviewer who spots a problem on a model has to explain where it is, what is wrong, and who should act. The next person often cannot connect an email back to the model. The aim was to make pointing at something as quick as noticing it, and keep the conversation attached to the issue.</p></div>
+          <h3>Three principles shaped the reader</h3>
+          <div class="principles">
+            <article><h3>Stay in the model</h3><p>Create feedback where the problem is. Do not make reviewers switch tools to describe a location.</p></article>
+            <article><h3>Make irreversible actions explicit</h3><p>Explain what cannot be undone in plain words before someone commits.</p></article>
+            <article><h3>Keep the log scannable</h3><p>Help a reviewer returning after a week find what changed in seconds.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="people" aria-labelledby="people-title">
+        <div class="section-heading"><span class="section-index">02 / People</span><h2 id="people-title">Design for reviewers who arrive when asked</h2></div>
+        <div class="section-body">
+          <p class="people-lede">Research and workshops produced personas across the project, from document controllers to engineers. An affinity map placed each by closeness to a deliverable: responsible, accountable, consulted, or informed.</p>
+          <figure class="figure-wide"><img src="assets/images/document-reader-02.jpg" alt="Affinity map organizing personas by responsibility for a deliverable." width="1600" height="1333" loading="lazy"><figcaption>Affinity map: roles organized by their relationship to a deliverable.</figcaption></figure>
+          <p>The reader’s heaviest users are reviewers who are consulted or informed. They arrive when asked, often from the supplier side, and judge quickly. That ruled out heavyweight forms and made the first-time experience as important as the tenth.</p>
+          <div class="pair">
+            <figure><img src="assets/images/document-reader-03.jpg" alt="Persona profile for Dianna, a supplier engineer and reviewer." width="1100" height="711" loading="lazy"><figcaption>Dianna · Supplier engineer and reviewer</figcaption></figure>
+            <figure><img src="assets/images/document-reader-04.jpg" alt="Persona profile for Ethan, a lead engineer and contract coordinator." width="1100" height="611" loading="lazy"><figcaption>Ethan · Lead engineer and contract coordinator</figcaption></figure>
+          </div>
+          <div class="note"><p><span class="placeholder">[FILL IN: two or three real research findings and the design decision each one informed]</span></p></div>
+        </div>
+      </section>
+
+      <section class="section" id="log" aria-labelledby="log-title">
+        <div class="section-heading"><span class="section-index">03 / Issue log</span><h2 id="log-title">Keep one scannable log per document version</h2></div>
+        <div class="section-body">
+          <div class="decision">
+            <div class="decision-top">
+              <div><h3>Problem</h3><p>Reviewers need to see everything raised on a document and know which items are still private.</p></div>
+              <div><h3>Decision</h3><p>A side panel lists issues grouped by date. Each item has a number, status, reply count, and attachments. The log belongs to the version being viewed.</p></div>
+            </div>
+          </div>
+          <figure class="feature-image"><img src="assets/images/document-reader-05.jpg" alt="Document issue log beside the 3D model, with dated issues, status, replies, and attachments." width="1300" height="812" loading="lazy"><figcaption>The issue log gives each item a stable reference and visible status.</figcaption></figure>
+          <div class="pair supporting-pair">
+            <figure><img src="assets/images/document-reader-06.jpg" alt="Empty issue log for a document version with Add an issue as the primary next step." width="1300" height="812" loading="lazy"><figcaption>Empty state: make the current version clear and offer one next action.</figcaption></figure>
+            <figure><img class="portrait" src="assets/images/document-reader-07.jpg" alt="Close-up of numbered issue cards with Private and Published labels and attachment thumbnails." width="700" height="1300" loading="lazy"><figcaption>Status and attachments stay visible while scanning.</figcaption></figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="evidence" aria-labelledby="evidence-title">
+        <div class="section-heading"><span class="section-index">04 / Evidence</span><h2 id="evidence-title">Build the evidence from the model</h2></div>
+        <div class="section-body">
+          <div class="decision"><div class="decision-top">
+            <div><h3>Problem</h3><p>Describing a location in words is slow and ambiguous.</p></div>
+            <div><h3>Decision</h3><p>Create an issue from the current view: capture the model, preserve a selected mesh, upload an outside image, or draw a mark-up. Keep Create and Cancel pinned so the form does not hide the model.</p></div>
+          </div></div>
+          <div class="steps">
+            <article><b>01 / Capture</b><h3>Show the current view</h3><p>Capture with or without a selected part.</p></article>
+            <article><b>02 / Upload</b><h3>Bring in a reference</h3><p>Add photos or other images from outside the viewer.</p></article>
+            <article><b>03 / Mark-up</b><h3>Point to the exact spot</h3><p>Draw on the capture to make the location explicit.</p></article>
+          </div>
+          <div class="pair supporting-pair">
+            <figure><img src="assets/images/document-reader-08.jpg" alt="Issue creation panel with mark-up and attachment controls beside the model." width="1300" height="812" loading="lazy"><figcaption>New issue: capture and mark-up are part of the same flow.</figcaption></figure>
+            <figure><img src="assets/images/document-reader-09.jpg" alt="Capture and Upload options shown as tabs in the issue attachment area." width="1300" height="812" loading="lazy"><figcaption>Capture and Upload share one attachment area.</figcaption></figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="thread" aria-labelledby="thread-title">
+        <div class="section-heading"><span class="section-index">05 / Discussion</span><h2 id="thread-title">Keep the conversation with the issue</h2></div>
+        <div class="section-body">
+          <div class="decision"><div class="decision-top">
+            <div><h3>Problem</h3><p>Replies that lose their context recreate the email problem.</p></div>
+            <div><h3>Decision</h3><p>Opening an issue replaces the log with a focused thread and a back control. Replies accept the same attachments as the original issue, keeping the discussion with the model.</p></div>
+          </div></div>
+          <figure class="feature-image"><img src="assets/images/document-reader-10.jpg" alt="Issue detail view with the model, issue summary, reply thread, and reply composer visible together." width="1300" height="812" loading="lazy"><figcaption>Issue details and replies share one focused view.</figcaption></figure>
+          <div class="pair supporting-pair">
+            <figure><img src="assets/images/document-reader-11.jpg" alt="An image attachment displayed inline in an issue reply." width="1300" height="812" loading="lazy"><figcaption>Attachments remain in the conversation.</figcaption></figure>
+            <figure><img class="portrait" src="assets/images/document-reader-12.jpg" alt="Close-up of an issue thread showing author, date, reply count, and a reply field with capture and upload controls." width="700" height="1300" loading="lazy"><figcaption>Reply context and attachment actions remain easy to find.</figcaption></figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="publishing" aria-labelledby="publishing-title">
+        <div class="section-heading"><span class="section-index">06 / Publishing</span><h2 id="publishing-title">Make publishing private first, public on purpose</h2></div>
+        <div class="section-body">
+          <div class="decision"><div class="decision-top">
+            <div><h3>Problem</h3><p>Reviewers may hesitate to raise a half-formed concern if it is instantly visible to everyone.</p></div>
+            <div><h3>Decision</h3><p>Issues begin private and can be edited or deleted. Publishing makes them visible to the whole organization and locks them. Confirmation names the issue and explains the irreversible consequence.</p></div>
+          </div></div>
+          <div class="lifecycle" aria-label="Issue lifecycle: private draft, published, then replies continue">
+            <div class="lifecycle-step"><strong>Private draft</strong><span>Edit or delete</span></div><span class="lifecycle-arrow" aria-hidden="true">→</span>
+            <div class="lifecycle-step"><strong>Published</strong><span>Visible to all, locked</span></div><span class="lifecycle-arrow" aria-hidden="true">→</span>
+            <div class="lifecycle-step"><strong>Replies</strong><span>Thread continues</span></div>
+          </div>
+          <figure class="feature-image narrow"><img src="assets/images/document-reader-13.jpg" alt="Publish confirmation explains what will become visible and that the action cannot be undone." width="1000" height="557" loading="lazy"><figcaption>The confirmation makes visibility and irreversibility explicit.</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="section" id="handover" aria-labelledby="handover-title">
+        <div class="section-heading"><span class="section-index">07 / Handover</span><h2 id="handover-title">Specify each interaction state</h2></div>
+        <div class="section-body">
+          <p>Each interaction was specified as its own state so engineering could build the reader without guessing.</p>
+          <ul class="handoff-list">
+            <li>Document issue log</li><li>Document issue details</li>
+            <li>Add an issue</li><li>Edit an issue</li>
+            <li>Delete an issue</li><li>Publish an issue</li>
+            <li>Add a reply without attachments</li><li>Add a reply with a captured attachment</li>
+            <li>Capture an attachment</li><li>Capture with mesh selection</li>
+            <li>Upload images</li><li>Add a mark-up</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" id="reflection" aria-labelledby="reflection-title">
+        <div class="section-heading"><span class="section-index">08 / Reflection</span><h2 id="reflection-title">Outcome and reflection</h2></div>
+        <div class="section-body">
+          <p class="reflection-kicker">What I learned</p>
+          <h3 class="reflection-title">In complex systems, a good comment is more than text.</h3>
+          <p class="reflection-lede">It has a place, a history, a set of people, and a clear relationship to the work being reviewed. Designing the reader around that complete context made the collaboration model much more useful than a generic chat panel.</p>
+          <p class="reflection-next">The next opportunity I would explore is helping large teams find the review points that matter most, without weakening the transparent, source-linked history that makes engineering collaboration trustworthy.</p>
+        </div>
+      </section>
+
+      <footer class="footer-nav">
+        <a href="work.html#projects">← Back to work</a>
+        <a href="ccim-case-study.html">Next case study →</a>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

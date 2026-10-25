@@ -310,9 +310,15 @@
   .work-preview-small .wps-title{font-size:clamp(1.3rem,2.4vw,1.7rem);font-weight:700;margin-bottom:.6rem;}
   .work-preview-small .wps-desc{color:var(--muted);font-size:.95rem;max-width:46ch;line-height:1.6;}
   .work-preview-small .wps-tags{justify-self:start;}
+  .all-projects-cta{
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+    padding:clamp(26px,4vw,42px) 0;border-top:1px solid var(--border-soft);
+  }
+  .all-projects-cta p{margin:.65rem 0 0;color:var(--muted);font-size:.95rem;}
   @media (max-width:820px){
     .work-preview-small{grid-template-columns:1fr;gap:1rem;}
     .work-preview-small .wps-tags{justify-self:start;}
+    .all-projects-cta{align-items:flex-start;flex-direction:column;}
   }
 
   /* ================= HOW I THINK ================= */
@@ -353,7 +359,7 @@
   .impact-head h2 span{color:var(--accent);}
   .impact-head p{color:var(--muted);font-size:1.05rem;max-width:52ch;line-height:1.65;}
   .impact-grid{
-    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
   }
   .impact-cell{padding:clamp(8px,1.2vw,16px) clamp(16px,2vw,28px) clamp(12px,1.5vw,20px) 0;border-right:1px solid var(--border-soft);}
   .impact-cell:last-child{border-right:none;padding-right:0;}
@@ -561,7 +567,7 @@
   <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
   <ul class="nav-links" data-od-id="nav-links">
     <li><a href="#top" data-od-id="nav-home">Home</a></li>
-    <li><a href="#work" data-od-id="nav-work">Work</a></li>
+    <li><a href="work.html#projects" data-od-id="nav-work">Work</a></li>
     <li><a href="#about" data-od-id="nav-about">About</a></li>
     <li><a href="https://drive.google.com/file/d/11xnpkp3scNq9Za6gYi-1OitTIbmNhtTH/view" target="_blank" rel="noopener noreferrer" data-od-id="nav-resume">Resume</a></li>
     <li><a href="#contact" data-od-id="nav-contact">Contact</a></li>
@@ -579,7 +585,7 @@
       <h1>Designing complex products into <em>clear experiences</em></h1>
       <p class="hero-sub">I'm a Product &amp; UX Designer who turns complex systems, data, and workflows into products people can understand, trust, and use with confidence.</p>
       <div class="hero-ctas">
-        <a class="btn-primary" href="#work" data-od-id="cta-view-work">View selected work</a>
+        <a class="btn-primary" href="work.html#projects" data-od-id="cta-view-work">View selected work</a>
         <a class="btn-ghost" href="#about" data-od-id="cta-about">About me</a>
       </div>
       <p class="availability" data-od-id="availability-note"><span class="pulse"></span>Open to new collaborations — <a href="mailto:sailibandekar27@gmail.com">say hello</a></p>
@@ -609,43 +615,6 @@
       <h2 class="reveal">Selected work<br>and outcomes</h2>
       <p class="lede reveal">Across enterprise systems and digital banking ecosystems, I create experiences that make complex products easier to understand, operate, and improve.</p>
     </div>
-
-    <!-- FEATURED — Tracking Monitor -->
-    <article class="featured-case reveal" data-od-id="case-tracking-monitor">
-      <div class="fc-label">
-        <span class="eyebrow">Featured case study</span>
-        <span class="fc-meta">LEAD UX DESIGNER · OPENTEXT · 6 MONTHS</span>
-      </div>
-      <h3>OT Command Center — Tracking Monitor</h3>
-      <p class="fc-quote">"Connecting fragmented shipment data so teams can see risk, understand impact, and act earlier."</p>
-      <div class="fc-visual">
-        <img src="assets/images/tracking-00.png" alt="Tracking Monitor dashboard showing shipment clusters and delivery status on a laptop" width="1254" height="1254" loading="lazy">
-        <p class="fc-visual-cap">FIG. 01 — TRACKING MONITOR OVERVIEW, OT COMMAND CENTER</p>
-      </div>
-      <div class="narrative-strip">
-        <div class="narrative-step">
-          <div class="step-label">PROBLEM</div>
-          <h4>Fragmented visibility</h4>
-          <p>Planning and execution data lived in isolation, making it difficult to trace a shipment back to the order it was blocking.</p>
-        </div>
-        <div class="narrative-step">
-          <div class="step-label">APPROACH</div>
-          <h4>Unified monitoring</h4>
-          <p>Connected live shipment status with business-critical order data through a layered drill-down experience.</p>
-        </div>
-        <div class="narrative-step">
-          <div class="step-label">IMPACT</div>
-          <h4>Proactive action</h4>
-          <p>Enabled teams to investigate disruptions, understand who is affected, and act without switching systems.</p>
-        </div>
-      </div>
-      <div class="fc-footer">
-        <div class="tag-row">
-          <span class="tag">B2B</span><span class="tag">Supply chain</span><span class="tag">AI integrated</span>
-        </div>
-        <a class="project-cta" href="tracking-monitor-case-study.html" data-od-id="link-case-tracking">Read case study →</a>
-      </div>
-    </article>
 
     <!-- Leading Australian Bank -->
     <article class="work-row" data-od-id="case-banking">
@@ -694,16 +663,9 @@
       </div>
     </article>
 
-    <!-- Airbnb — smaller preview, external Behance link -->
-    <div class="work-preview-small reveal" data-od-id="case-airbnb">
-      <div>
-        <div class="wps-title">Airbnb — redesign concept</div>
-        <p class="wps-desc">A redesign concept exploring how Airbnb could deliver a smoother, more personal travel experience.</p>
-      </div>
-      <div class="wps-tags tag-row">
-        <span class="tag">B2C</span><span class="tag">Mobile UI</span>
-      </div>
-      <a class="project-cta" href="https://www.behance.net/sailipbandekar" target="_blank" rel="noopener" data-od-id="link-case-airbnb">View project ↗</a>
+    <div class="all-projects-cta">
+      <div><span class="eyebrow muted">Explore the full portfolio</span><p>Browse case studies and concept work across enterprise, banking, and mobile products.</p></div>
+      <a class="project-cta" href="work.html#projects" data-od-id="view-all-projects">View All Projects <span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </section>
@@ -753,13 +715,8 @@
         <p class="label">Increase in mobile transactions within one year of launch.</p>
         <span class="src">Leading Australian Bank</span>
       </div>
-      <div class="impact-cell">
-        <div class="num"><em>40</em>%+</div>
-        <p class="label">Improvement in shipment visibility via unified tracking and condition monitoring.</p>
-        <span class="src">OT Tracking Monitor</span>
-      </div>
     </div>
-    <p class="impact-fine">Figures are directional results reported internally by the product and analytics teams during or after pilot rollout. They indicate movement, but are not independently audited.</p>
+    <p class="impact-fine">Banking programme outcomes reported internally by product and analytics teams. They are directional and not independently audited.</p>
   </div>
 </section>
 
