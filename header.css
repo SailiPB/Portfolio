@@ -85,6 +85,10 @@
 
 .site-nav .nav-toggle {
   display: none;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
   padding: .5rem .7rem;
   border: 1px solid oklch(32% 0.014 90);
   border-radius: 999px;

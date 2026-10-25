@@ -50,6 +50,8 @@ a { color: inherit; }
 .project-card { min-width: 0; padding-top: 16px; border-top: 1px solid var(--work-border); }
 .project-visual { position: relative; display: block; overflow: hidden; aspect-ratio: 16 / 10; margin-bottom: 19px; border: 1px solid var(--work-border); background: var(--work-surface); }
 .project-visual img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease, filter .35s ease; }
+.project-visual--reader { background: #fff; }
+.project-visual--reader img { object-fit: contain; }
 .project-card:hover .project-visual img { transform: scale(1.025); filter: contrast(1.03) saturate(1.04); }
 .project-visual--concept { display: grid; place-items: center; background: linear-gradient(135deg, #222327, #17181d 62%, #2a2226); }
 .project-visual--concept span { color: #f3eee8; font: 700 clamp(40px, 6vw, 76px)/1 var(--work-display); letter-spacing: -.04em; }

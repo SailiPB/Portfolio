@@ -13,15 +13,25 @@
   <style>
     :root {
       color-scheme: light;
-      --paper: #f7f9fc;
+      --paper: #fbfcfd;
       --panel: #fff;
-      --ink: #111827;
-      --muted: #536078;
-      --blue: #1668e8;
-      --pink: #7955e8;
-      --line: #dce3ee;
-      --soft: #edf3ff;
-      --deep: #0e162b;
+      --ink: #171a20;
+      --muted: #606a78;
+      --blue: #315db4;
+      --line: #d8dde5;
+      --soft: #f2f5f8;
+      --deep: #111827;
+      --content-width: 1220px;
+      --text-width: 88ch;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 48px;
+      --space-8: 72px;
+      --radius: 3px;
       --sans: 'Manrope', sans-serif;
       --display: 'Bricolage Grotesque', sans-serif;
       --serif: 'Source Serif 4', Georgia, serif;
@@ -29,17 +39,20 @@
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
     body {
       margin: 0;
       background: var(--paper);
       color: var(--ink);
-      font: 400 16px/1.65 var(--sans);
+      font: 400 16px/1.7 var(--sans);
       -webkit-font-smoothing: antialiased;
     }
     img { display: block; width: 100%; height: auto; }
     a { color: inherit; }
     :focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+    .reading-progress { position: fixed; inset: 0 0 auto; z-index: 1100; height: 2px; pointer-events: none; }
+    .reading-progress span { display: block; width: 100%; height: 100%; transform: scaleX(0); transform-origin: left; background: var(--blue); }
+    .site-nav .nav-links a[aria-current="page"] { color: #f3f0e9; border-color: var(--blue); }
     .skip-link {
       position: fixed;
       top: 8px;
@@ -54,9 +67,9 @@
 
     .layout {
       display: block;
-      width: min(100% - 64px, 1320px);
+      width: min(100% - 64px, var(--content-width));
       margin: 0 auto;
-      padding: 102px 0 112px;
+      padding: 112px 0 120px;
     }
     .eyebrow, .section-index, .meta-label, .image-label {
       font-family: var(--mono);
@@ -69,94 +82,92 @@
     .hero {
       position: relative;
       display: grid;
-      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-      gap: clamp(28px, 4vw, 56px);
-      align-items: center;
-      padding: 14px 0 48px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 32px;
+      padding: 12px 0 40px;
       border-bottom: 1px solid var(--line);
     }
     .hero-copy { min-width: 0; }
-    .eyebrow { display: flex; align-items: center; gap: 9px; color: var(--blue); }
-    .eyebrow::before { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); content: ''; }
+    .eyebrow { display: flex; align-items: center; gap: 9px; margin: 0; color: var(--blue); }
+    .eyebrow::before { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); content: ''; }
     h1, h2, h3, h4 { margin: 0; font-family: var(--display); line-height: 1.08; }
-    h1 { max-width: 12ch; margin-top: 22px; font-size: clamp(42px, 5.3vw, 72px); font-weight: 700; letter-spacing: -.035em; }
+    h1 { max-width: none; margin-top: 18px; font-size: clamp(42px, 5vw, 68px); font-weight: 700; letter-spacing: -.025em; }
     h1 em, h2 em { color: var(--blue); font-style: normal; }
-    .lede { max-width: 54ch; margin: 22px 0 0; color: var(--muted); font: 500 clamp(18px, 1.6vw, 22px)/1.55 var(--serif); }
+    .lede { max-width: 84ch; margin: 18px 0 0; color: var(--muted); font: 400 clamp(18px, 1.55vw, 21px)/1.55 var(--serif); }
     .meta {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px 22px;
-      margin: 32px 0 0;
-      padding-top: 18px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px 24px;
+      margin: 28px 0 0;
+      padding: 16px 0 0;
       border-top: 1px solid var(--line);
     }
     .meta div { min-width: 0; }
     .meta-label { display: block; color: var(--muted); }
-    .meta-value { display: block; margin-top: 4px; font-size: 14px; font-weight: 700; }
-    .placeholder {
-      display: inline;
-      padding: 2px 5px;
-      background: #fff1f6;
-      color: #7a1640;
-      font-weight: 600;
-      box-decoration-break: clone;
-      -webkit-box-decoration-break: clone;
-    }
-    .hero-figure { min-width: 0; margin: 0; padding: 10px; border: 1px solid var(--line); background: var(--panel); box-shadow: 12px 12px 0 var(--soft); }
+    .meta-value { display: block; margin: 5px 0 0; font-size: 14px; font-weight: 600; }
+    .hero-figure { min-width: 0; margin: 0; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
     .hero-figure img { aspect-ratio: 1.6; object-fit: contain; background: #fff; }
-    figcaption { margin-top: 9px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    figcaption { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.5; }
 
     .glance {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1px;
-      margin-top: 30px;
-      border: 1px solid var(--line);
-      background: var(--line);
+      gap: 24px;
+      margin-top: 34px;
+      padding: 20px 0 24px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
-    .glance article { min-width: 0; padding: 20px; background: var(--panel); }
+    .glance article { min-width: 0; }
     .glance h2 { margin-bottom: 9px; color: var(--blue); font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
-    .glance p { margin: 0; font-size: 14px; line-height: 1.55; }
+    .glance p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
 
-    .section { padding: 74px 0 0; scroll-margin-top: 92px; }
-    .section-heading { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 18px; align-items: start; margin-bottom: 24px; }
-    .section-index { padding-top: 8px; color: var(--blue); }
-    h2 { max-width: 22ch; font-size: clamp(28px, 3.2vw, 42px); font-weight: 700; letter-spacing: -.025em; }
-    h3 { margin: 30px 0 9px; font-size: 20px; font-weight: 700; }
+    .section { padding: clamp(64px, 8vw, 96px) 0 0; scroll-margin-top: 100px; }
+    .section-heading { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; align-items: start; margin-bottom: 30px; }
+    .section-index { padding-top: 0; color: var(--blue); }
+    h2 { max-width: none; font-size: clamp(29px, 3.2vw, 42px); font-weight: 600; letter-spacing: -.02em; }
+    h3 { margin: 30px 0 9px; font-size: 19px; font-weight: 700; }
     h4 { font-size: 16px; font-weight: 700; }
-    p { max-width: 70ch; margin: 0 0 16px; }
+    p { max-width: var(--text-width); margin: 0 0 16px; }
     .section-body { min-width: 0; }
     .section-body > p { color: #2b3547; }
     .section-body > p + p { margin-top: 10px; }
-    .principles, .decision { margin-top: 26px; padding: 24px; border: 1px solid var(--line); background: var(--panel); }
-    .principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .context-split { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr); gap: clamp(32px, 6vw, 88px); align-items: stretch; }
+    .context-copy p { max-width: none; }
+    .context-split .note { align-self: stretch; margin: 0; padding: 18px 0 18px 20px; }
+    .context-split .note-label { margin-bottom: 10px; color: var(--blue); font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .context-split .note p:last-child { max-width: none; line-height: 1.65; }
+    .principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 32px; padding: 20px 0 0; border-top: 1px solid var(--line); }
     .principles article { min-width: 0; }
     .principles h3 { margin: 0 0 8px; font-size: 16px; }
     .principles p { margin: 0; color: var(--muted); font-size: 14px; }
     .people-lede { margin-bottom: 26px; }
-    .figure-wide { margin: 26px 0; padding: 9px; border: 1px solid var(--line); background: var(--panel); }
-    .figure-wide img { max-height: 660px; object-fit: contain; background: #fff; }
-    .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 22px 0; }
-    .pair figure { min-width: 0; margin: 0; padding: 8px; border: 1px solid var(--line); background: var(--panel); }
+    .figure-wide { margin: 30px 0; padding: 6px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+    .figure-wide img { width: 100%; height: auto; object-fit: contain; background: #fff; }
+    .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin: 26px 0; align-items: start; }
+    .pair figure { min-width: 0; margin: 0; padding: 6px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
     .pair img { object-fit: contain; background: #fff; }
     .pair img.portrait { width: auto; max-width: 100%; max-height: 600px; margin: 0 auto; }
-    .note { margin-top: 24px; padding: 17px 20px; border-left: 3px solid var(--pink); background: var(--soft); }
+    .note { margin-top: 26px; padding: 14px 0 14px 18px; border-left: 2px solid var(--blue); background: transparent; }
     .note p { margin: 0; }
 
-    .decision { padding: 22px 24px; }
-    .decision-top { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
-    .decision-top h3 { margin: 0 0 8px; font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--blue); }
-    .decision-top p { margin: 0; color: #2b3547; font-size: 14px; }
-    .feature-image { margin: 22px 0 0; padding: 8px; border: 1px solid var(--line); background: #fff; }
-    .feature-image img { max-height: 700px; object-fit: contain; }
-    .feature-image figcaption { padding: 0 4px 2px; }
-    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 24px 0; border: 1px solid var(--line); background: var(--line); }
-    .steps article { padding: 18px; background: var(--panel); }
-    .steps b { display: block; margin-bottom: 8px; color: var(--blue); font: 500 11px var(--mono); text-transform: uppercase; }
+    .decision { margin: 26px 0 0; padding: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; }
+    .decision-top { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+    .decision-top h3 { margin: 0 0 8px; color: var(--blue); font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .decision-top p { margin: 0; color: #303744; font-size: 14px; }
+    .feature-image { margin: 32px 0 0; padding: 6px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+    .feature-image img { max-height: 760px; object-fit: contain; background: #fff; }
+    .feature-image figcaption { padding: 0; }
+    .takeaway { max-width: none; margin: 26px 0 0; padding-top: 15px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .takeaway strong { margin-right: 8px; color: var(--blue); font: 500 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin: 28px 0; padding: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .steps article { min-width: 0; padding: 0 18px 0 0; }
+    .steps article + article { padding-left: 18px; border-left: 1px solid var(--line); }
+    .steps b { display: block; margin-bottom: 8px; color: var(--blue); font: 500 10px var(--mono); text-transform: uppercase; }
     .steps h3 { margin: 0 0 5px; font-size: 16px; }
     .steps p { margin: 0; color: var(--muted); font-size: 13px; }
     .lifecycle { display: flex; align-items: center; gap: 12px; margin: 24px 0; }
-    .lifecycle-step { flex: 1; padding: 15px; border: 1px solid var(--line); background: var(--panel); }
+    .lifecycle-step { flex: 1; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .lifecycle-step strong { display: block; font-size: 14px; }
     .lifecycle-step span { color: var(--muted); font-size: 12px; }
     .lifecycle-arrow { color: var(--blue); font: 18px var(--mono); }
@@ -164,39 +175,47 @@
     .handoff-list li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
     .handoff-list li::before { margin-right: 10px; color: var(--blue); content: '↗'; }
     .reflection-kicker { margin: 0 0 20px; color: var(--blue); font: 500 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
-    .reflection-title { max-width: 18ch; margin: 0 0 24px; font-size: clamp(34px, 5.5vw, 68px); letter-spacing: -.035em; }
-    .reflection-lede { max-width: 68ch; color: var(--ink); font: 500 clamp(19px, 2vw, 24px)/1.65 var(--serif); }
-    .reflection-next { max-width: 68ch; margin-top: 28px; color: var(--muted); font-size: 15px; }
+    .reflection-title { max-width: none; margin: 0 0 24px; font-size: clamp(34px, 5.5vw, 68px); letter-spacing: -.025em; }
+    .reflection-lede { max-width: none; color: var(--ink); font: 500 clamp(19px, 2vw, 24px)/1.65 var(--serif); }
+    .reflection-next { max-width: none; margin-top: 28px; color: var(--muted); font-size: 15px; }
     .footer-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--line); font: 500 12px var(--mono); text-transform: uppercase; }
     .footer-nav a { color: var(--blue); text-decoration: none; }
     .footer-nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
     @media (max-width: 980px) {
-      .layout { width: min(100% - 44px, 900px); padding-top: 92px; }
-      .hero { grid-template-columns: 1fr; }
+      .layout { width: min(100% - 48px, 900px); padding-top: 96px; }
       .hero-figure { max-width: 760px; }
-      .hero-figure img { aspect-ratio: 1.7; }
+      .glance { gap: 20px; }
     }
     @media (max-width: 640px) {
       .layout { width: min(100% - 32px, 520px); padding: 86px 0 72px; }
       .hero { gap: 25px; padding-bottom: 30px; }
-      h1 { font-size: clamp(38px, 11vw, 52px); }
+      h1 { font-size: clamp(38px, 10vw, 52px); }
       .lede { font-size: 18px; }
-      .meta { grid-template-columns: 1fr 1fr; gap: 13px; margin-top: 24px; }
+      .meta { grid-template-columns: minmax(0, 1fr); gap: 14px; margin-top: 24px; }
       .meta-value { font-size: 13px; }
-      .hero-figure { padding: 6px; }
       .glance { grid-template-columns: 1fr; }
-      .glance article { padding: 17px; }
       .section { padding-top: 54px; }
-      .section-heading { grid-template-columns: 42px minmax(0, 1fr); gap: 10px; }
+      .section-heading { margin-bottom: 22px; }
       .section-index { font-size: 10px; }
-      .principles, .decision { padding: 17px; }
       .principles, .decision-top, .pair, .steps, .handoff-list { grid-template-columns: 1fr; }
       .principles { gap: 18px; }
+      .principles article { padding: 0; }
+      .decision { padding: 18px 0; }
+      .decision-top { gap: 18px; }
+      .steps { gap: 18px; }
+      .steps article, .steps article + article { padding: 0; border: 0; }
       .pair { gap: 12px; }
       .lifecycle { align-items: stretch; flex-direction: column; }
       .lifecycle-arrow { align-self: center; transform: rotate(90deg); }
       .footer-nav { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 720px) {
+      .context-split { grid-template-columns: 1fr; gap: 18px; }
+      .context-split .note { margin-top: 2px; }
+    }
+    @media (max-width: 360px) {
+      .nav-cta { max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -204,13 +223,14 @@
   </style>
 </head>
 <body>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-nav" id="siteNav">
     <a class="brand" href="index.html#top">Saili Bandekar<span class="dot" aria-hidden="true"></span></a>
     <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-navigation">☰</button>
     <ul class="nav-links" id="site-navigation">
       <li><a href="index.html#top">Home</a></li>
-      <li><a href="work.html#projects">Work</a></li>
+      <li><a href="work.html#projects" aria-current="page">Work</a></li>
       <li><a href="index.html#about">About</a></li>
       <li><a href="https://drive.google.com/file/d/11xnpkp3scNq9Za6gYi-1OitTIbmNhtTH/view" target="_blank" rel="noopener noreferrer">Resume</a></li>
       <li><a href="index.html#contact">Contact</a></li>
@@ -227,13 +247,13 @@
           <p class="lede">Designing the document reader for OpenText Core Collaboration for Engineering, where owners and suppliers settle design questions before they turn into rework.</p>
           <dl class="meta">
             <div><dt class="meta-label">Product</dt><dd class="meta-value">Core Collaboration for Engineering</dd></div>
-            <div><dt class="meta-label">Focus</dt><dd class="meta-value">Document reader and issue log</dd></div>
+            <div><dt class="meta-label">Scope</dt><dd class="meta-value">Issue log, model-based evidence, and discussion</dd></div>
             <div><dt class="meta-label">Role</dt><dd class="meta-value">Product Designer / UX Designer</dd></div>
           </dl>
         </div>
         <figure class="hero-figure">
-          <img src="assets/images/document-reader-01.jpg" alt="Document reader showing a 3D model, properties panel, and a threaded issue detail panel." width="1800" height="1125" fetchpriority="high">
-          <figcaption>Model context and the issue thread remain visible together.</figcaption>
+          <img src="assets/images/document-reader-cover.png" alt="OpenText engineering document reader displayed on a laptop, with a 3D model, document properties, issue details, mark-up, and attachment controls." width="1672" height="941" fetchpriority="high">
+          <figcaption>The document, 3D model, and issue tools share one review workspace.</figcaption>
         </figure>
       </header>
 
@@ -246,15 +266,23 @@
       <section class="section" id="context" aria-labelledby="context-title">
         <div class="section-heading"><span class="section-index">01 / Context</span><h2 id="context-title">Why the reader matters</h2></div>
         <div class="section-body">
-          <p>Core Collaboration for Engineering is a cloud workspace where owner/operators exchange contract deliverables and transmittals with suppliers, without email, FTP, or shared drives. Suppliers work in a separate space, so the owner’s main repository stays protected.</p>
-          <p>The reader is where those deliverables are examined. It opens 2D drawings and 3D models in the browser, and it is where the feedback loop either works or breaks. When it breaks, mistakes surface late as delays, missed SLAs, and costly rework.</p>
-          <div class="note"><p><strong>The design problem:</strong> A reviewer who spots a problem on a model has to explain where it is, what is wrong, and who should act. The next person often cannot connect an email back to the model. The aim was to make pointing at something as quick as noticing it, and keep the conversation attached to the issue.</p></div>
+          <div class="context-split">
+            <div class="context-copy">
+              <p>Core Collaboration for Engineering is a cloud workspace where owner/operators exchange contract deliverables and transmittals with suppliers, without email, FTP, or shared drives. Suppliers work in a separate space, so the owner’s main repository stays protected.</p>
+              <p>The reader is where those deliverables are examined. It opens 2D drawings and 3D models in the browser, and it is where the feedback loop either works or breaks. When it breaks, mistakes surface late as delays, missed SLAs, and costly rework.</p>
+            </div>
+            <aside class="note" aria-label="The design problem">
+              <p class="note-label">The design problem</p>
+              <p>A reviewer who spots a problem on a model has to explain where it is, what is wrong, and who should act. The next person often cannot connect an email back to the model. The aim was to make pointing at something as quick as noticing it, and keep the conversation attached to the issue.</p>
+            </aside>
+          </div>
           <h3>Three principles shaped the reader</h3>
           <div class="principles">
             <article><h3>Stay in the model</h3><p>Create feedback where the problem is. Do not make reviewers switch tools to describe a location.</p></article>
             <article><h3>Make irreversible actions explicit</h3><p>Explain what cannot be undone in plain words before someone commits.</p></article>
             <article><h3>Keep the log scannable</h3><p>Help a reviewer returning after a week find what changed in seconds.</p></article>
           </div>
+          <p class="takeaway"><strong>Why it matters</strong>The reader keeps a review anchored to the document, so a comment can be understood and acted on without reconstructing its context from email.</p>
         </div>
       </section>
 
@@ -262,13 +290,15 @@
         <div class="section-heading"><span class="section-index">02 / People</span><h2 id="people-title">Design for reviewers who arrive when asked</h2></div>
         <div class="section-body">
           <p class="people-lede">Research and workshops produced personas across the project, from document controllers to engineers. An affinity map placed each by closeness to a deliverable: responsible, accountable, consulted, or informed.</p>
-          <figure class="figure-wide"><img src="assets/images/document-reader-02.jpg" alt="Affinity map organizing personas by responsibility for a deliverable." width="1600" height="1333" loading="lazy"><figcaption>Affinity map: roles organized by their relationship to a deliverable.</figcaption></figure>
+          <figure class="figure-wide"><img src="assets/images/affinity-mapping.png" alt="Affinity map grouping project stakeholders as responsible, accountable, consulted, and informed, with connections between their workflow phases." width="1920" height="1536" loading="lazy"><figcaption>Affinity map: four stakeholder quadrants connected by workflow phase.</figcaption></figure>
           <p>The reader’s heaviest users are reviewers who are consulted or informed. They arrive when asked, often from the supplier side, and judge quickly. That ruled out heavyweight forms and made the first-time experience as important as the tenth.</p>
           <div class="pair">
-            <figure><img src="assets/images/document-reader-03.jpg" alt="Persona profile for Dianna, a supplier engineer and reviewer." width="1100" height="711" loading="lazy"><figcaption>Dianna · Supplier engineer and reviewer</figcaption></figure>
-            <figure><img src="assets/images/document-reader-04.jpg" alt="Persona profile for Ethan, a lead engineer and contract coordinator." width="1100" height="611" loading="lazy"><figcaption>Ethan · Lead engineer and contract coordinator</figcaption></figure>
+            <figure><img src="assets/images/MainContentCanvas.png" alt="Persona profile for Dianna, supplier engineer and reviewer, with traits, mental model, goals, needs, and work scenarios." width="1920" height="1469" loading="lazy"><figcaption>Dianna · Supplier engineer and reviewer</figcaption></figure>
+            <figure><img src="assets/images/Container.png" alt="Persona profile for Ethan, lead engineer and contract coordinator, with traits, mental model, goals, needs, and key scenarios." width="1825" height="1474" loading="lazy"><figcaption>Ethan · Lead engineer and contract coordinator</figcaption></figure>
           </div>
-          <div class="note"><p><span class="placeholder">[FILL IN: two or three real research findings and the design decision each one informed]</span></p></div>
+          <div class="note"><p>The documented design rationale is to make first-time review straightforward: establish the current document context, keep evidence beside the model, and give reviewers a clear route from the issue log into its discussion.</p></div>
+          <!-- TODO: Add verified research findings and their linked design decisions when source notes are available. -->
+          <p class="takeaway"><strong>Why it matters</strong>Reviewers often arrive when asked, so the first-time experience needs to make document context and the next action clear without a heavy form.</p>
         </div>
       </section>
 
@@ -286,6 +316,7 @@
             <figure><img src="assets/images/document-reader-06.jpg" alt="Empty issue log for a document version with Add an issue as the primary next step." width="1300" height="812" loading="lazy"><figcaption>Empty state: make the current version clear and offer one next action.</figcaption></figure>
             <figure><img class="portrait" src="assets/images/document-reader-07.jpg" alt="Close-up of numbered issue cards with Private and Published labels and attachment thumbnails." width="700" height="1300" loading="lazy"><figcaption>Status and attachments stay visible while scanning.</figcaption></figure>
           </div>
+          <p class="takeaway"><strong>Why it matters</strong>Grouping issues by date and document version helps reviewers scan changes without confusing comments from separate revisions.</p>
         </div>
       </section>
 
@@ -305,6 +336,7 @@
             <figure><img src="assets/images/document-reader-08.jpg" alt="Issue creation panel with mark-up and attachment controls beside the model." width="1300" height="812" loading="lazy"><figcaption>New issue: capture and mark-up are part of the same flow.</figcaption></figure>
             <figure><img src="assets/images/document-reader-09.jpg" alt="Capture and Upload options shown as tabs in the issue attachment area." width="1300" height="812" loading="lazy"><figcaption>Capture and Upload share one attachment area.</figcaption></figure>
           </div>
+          <p class="takeaway"><strong>Why it matters</strong>Capturing, selecting, uploading, and marking up evidence keeps the location of a concern legible to the next reviewer.</p>
         </div>
       </section>
 
@@ -320,6 +352,7 @@
             <figure><img src="assets/images/document-reader-11.jpg" alt="An image attachment displayed inline in an issue reply." width="1300" height="812" loading="lazy"><figcaption>Attachments remain in the conversation.</figcaption></figure>
             <figure><img class="portrait" src="assets/images/document-reader-12.jpg" alt="Close-up of an issue thread showing author, date, reply count, and a reply field with capture and upload controls." width="700" height="1300" loading="lazy"><figcaption>Reply context and attachment actions remain easy to find.</figcaption></figure>
           </div>
+          <p class="takeaway"><strong>Why it matters</strong>Keeping replies and attachments on the issue preserves the connection between the conversation and the model being reviewed.</p>
         </div>
       </section>
 
@@ -336,6 +369,7 @@
             <div class="lifecycle-step"><strong>Replies</strong><span>Thread continues</span></div>
           </div>
           <figure class="feature-image narrow"><img src="assets/images/document-reader-13.jpg" alt="Publish confirmation explains what will become visible and that the action cannot be undone." width="1000" height="557" loading="lazy"><figcaption>The confirmation makes visibility and irreversibility explicit.</figcaption></figure>
+          <p class="takeaway"><strong>Why it matters</strong>Separating private drafts from published issues gives reviewers room to raise early concerns while making the wider visibility change explicit.</p>
         </div>
       </section>
 
@@ -351,6 +385,7 @@
             <li>Capture an attachment</li><li>Capture with mesh selection</li>
             <li>Upload images</li><li>Add a mark-up</li>
           </ul>
+          <p class="takeaway"><strong>Why it matters</strong>State-by-state specifications make the review flow and its edge cases clearer to implement.</p>
         </div>
       </section>
 
@@ -370,5 +405,17 @@
       </footer>
     </main>
   </div>
+  <script>
+    const progressFill = document.querySelector('.reading-progress span');
+    const updateReadingProgress = () => {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
+      progressFill.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
+    };
+
+    window.addEventListener('scroll', updateReadingProgress, { passive: true });
+    window.addEventListener('resize', updateReadingProgress);
+    updateReadingProgress();
+  </script>
 </body>
 </html>
