@@ -554,6 +554,15 @@
   @media (max-width:1280px){
     .hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);}
   }
+  @media (max-width:560px){
+    .about-grid{grid-template-columns:minmax(0,1fr);}
+    .career{margin-top:clamp(32px,6vw,48px);}
+    .hero-ctas{gap:.75rem;}
+    .hero-ctas .btn-primary{
+      min-height:44px;padding:.72rem .9rem;font-size:11px;line-height:1.2;white-space:nowrap;flex:none;
+    }
+    .hero-ctas .btn-ghost{min-height:44px;padding:.6rem .8rem;font-size:11px;}
+  }
   img{max-width:100%;height:auto;}
   .fc-visual img{height:auto;aspect-ratio:4/3;object-fit:cover;}
   .wr-visual img{width:100%;height:auto;min-height:0;aspect-ratio:16/10;object-fit:cover;}
