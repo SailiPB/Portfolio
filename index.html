@@ -545,6 +545,12 @@
     .work-row .wr-copy{order:1;}
     .work-row .wr-visual{order:2;}
   }
+  @media (max-width:1280px){
+    .hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);}
+  }
+  img{max-width:100%;height:auto;}
+  .fc-visual img{height:auto;aspect-ratio:4/3;object-fit:cover;}
+  .wr-visual img{width:100%;height:auto;min-height:0;aspect-ratio:16/10;object-fit:cover;}
 </style>
 </head>
 <body>
